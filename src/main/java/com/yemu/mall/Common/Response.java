@@ -2,8 +2,8 @@ package com.yemu.mall.Common;
 
 public class Response<T>{
 
-    private int status=-1;
-    private String message="加载中。。。";
+    private int status;
+    private String message="ok";
     private T data;
 
     private Response(int status){
@@ -41,6 +41,9 @@ public class Response<T>{
     }
     public static <T> Response<T> error(String message){
         return new Response<>(ResponseCode.ERROR.getCode(),message);
+    }
+    public static <T> Response<T> error(int errorCode,String message){
+        return new Response<>(errorCode,message);
     }
     public static <T> Response<T> createByErrorCodeMessage(int errorCode,String message){
         return new Response<>(errorCode,message);

@@ -5,4 +5,5 @@ import com.yemu.mall.entity.User;
 
 public interface LoginService {
     Response Login(User user);
+    Response isLogin(String token);
 }
