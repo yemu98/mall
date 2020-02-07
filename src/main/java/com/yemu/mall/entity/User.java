@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
 
 @Data
@@ -15,7 +16,9 @@ public class User {
     @TableId(value = "id")
     private int id;
     private String name;
+    @NotBlank(message = "手机号不能为空")
     private String phone;
+    @NotBlank(message = "密码不能为空")
     private String pwd;
     private String role;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")

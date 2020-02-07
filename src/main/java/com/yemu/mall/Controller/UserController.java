@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController//=@ResponseBody+@Controller
 @RequestMapping("/user")
@@ -28,6 +30,26 @@ public class UserController {
     public Response getUserByName(@NotBlank(message = "name不能为空") String userName){
         User user=userService.findUserByName(userName);
         return Response.ok(user);
+    }
+
+    @GetMapping("/getByPhone")
+    public Response getByPhone(@NotBlank(message = "参数缺失") String phone){
+        User user=userService.findUserByPhone(phone);
+        if (null!=user){
+            Map<String,User> map=new HashMap<>();
+            map.put("user",user);
+            return Response.ok(map);
+        }
+        else {
+            return Response.error("无此用户！");
+        }
+    }
+
+    @GetMapping("/existByPhone")
+    public Response existByPhone(@NotBlank(message = "参数缺失") String phone){
+        Map<String, Boolean> map=new HashMap<>();
+        map.put("exist",userService.existUserByPhone(phone));
+        return Response.ok(map);
     }
 
     @GetMapping(value = "getById")

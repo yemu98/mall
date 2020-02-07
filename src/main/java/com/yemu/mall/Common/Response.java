@@ -1,6 +1,6 @@
 package com.yemu.mall.Common;
 
-public class Response<T>{
+public class Response<T> {
 
     private int status;
     private String message="ok";
