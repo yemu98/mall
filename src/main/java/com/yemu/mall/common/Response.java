@@ -1,4 +1,7 @@
-package com.yemu.mall.Common;
+package com.yemu.mall.common;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Response<T> {
 
@@ -10,18 +13,24 @@ public class Response<T> {
         this.status=status;
     }
 
-    private Response(int status,String message){
+    private Response(int status, String message){
         this.status=status;
         this.message=message;
     }
-    private Response(int status,T data){
+    private Response(int status, T data){
         this.status=status;
         this.data=data;
     }
-    private Response(int status,String message,T data){
+    private Response(int status, String message, T data){
         this.status=status;
         this.message=message;
         this.data=data;
+    }
+
+    public Response(int code, String message, Map<String, T> dataMap) {
+        this.status=code;
+        this.message=message;
+        this.data= (T) dataMap;
     }
 
     public static <T> Response<T> ok(){
@@ -35,6 +44,11 @@ public class Response<T> {
     }
     public static <T> Response<T> ok(String message){
         return new Response<>(ResponseCode.SUCCESS.getCode(),message);
+    }
+    public static <T> Response<T> ok(String message,String dataName,T data){
+        Map<String,T> dataMap=new HashMap<>();
+        dataMap.put(dataName,data);
+        return new Response<T>(ResponseCode.SUCCESS.getCode(),message,dataMap);
     }
     public static <T> Response<T> error(){
         return new Response<>(ResponseCode.ERROR.getCode(),ResponseCode.ERROR.getDesc());

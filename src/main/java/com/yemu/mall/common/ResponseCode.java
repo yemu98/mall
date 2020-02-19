@@ -1,4 +1,4 @@
-package com.yemu.mall.Common;
+package com.yemu.mall.common;
 
 public enum  ResponseCode {
     SUCCESS(0,"SUCCESS"),
@@ -7,7 +7,7 @@ public enum  ResponseCode {
     private final int code;
     private final String desc;
 
-    private ResponseCode(int code,String desc) {
+     ResponseCode(int code,String desc) {
         this.code = code;
         this.desc = desc;
     }

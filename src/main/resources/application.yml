@@ -41,9 +41,9 @@ spring:
         exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
 mybatis:
   type-aliases-package: com.yemu.mall.entity
-  mapper-locations: classpath:mapper/*Mapper.xml
+  mapper-locations: classpath:com/yemu/mall/mapper/**/*.xml
 mybatis-plus:
-  mapper-locations: classpath:mapper/*.xml
+  mapper-locations: classpath:com/yemu/mall/mapper/**/*.xml
 mvc:
   #出现错误时, 直接抛出异常
   throw-exception-if-no-handler-found: true

@@ -1,10 +1,10 @@
-package com.yemu.mall.Service;
+package com.yemu.mall.service.Impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yemu.mall.Common.Response;
+import com.yemu.mall.common.Response;
 import com.yemu.mall.entity.User;
 import com.yemu.mall.mapper.UserMapper;
-import lombok.AllArgsConstructor;
+import com.yemu.mall.service.UserService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,10 +26,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public boolean existUserByPhone(String phone) {
         User user=baseMapper.getUserByPhone(phone);
-        if (null!=user){
-            return true;
-        }
-        return false;
+        return null != user;
     }
 
     @Override

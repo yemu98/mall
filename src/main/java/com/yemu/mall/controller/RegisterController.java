@@ -1,23 +1,23 @@
-package com.yemu.mall.Controller;
+package com.yemu.mall.controller;
 
-import com.yemu.mall.Common.Response;
-import com.yemu.mall.Service.UserService;
+import com.yemu.mall.common.Response;
 import com.yemu.mall.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.yemu.mall.service.UserService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 
 @RestController
 @Validated
 public class RegisterController {
-    @Autowired
+    @Resource
     private UserService userService;
 
     @PostMapping("/register")
-    public Response register(@Valid User user){
+    public Response<?> register(@Valid User user){
         return userService.register(user);
     }
 }

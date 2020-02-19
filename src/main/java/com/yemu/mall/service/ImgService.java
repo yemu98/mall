@@ -1,9 +1,7 @@
-package com.yemu.mall.Service;
+package com.yemu.mall.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yemu.mall.entity.Img;
-import com.yemu.mall.mapper.ImgMapper;
 
 import java.util.List;
 

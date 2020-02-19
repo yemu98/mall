@@ -13,9 +13,11 @@ public class Product {
     @JsonFormat
     @TableId(value = "id")
     private int id;
-    private String title;
+    private String info;
     private String name;
     private String brand;
     private BigDecimal price;
     private String category;
+    private String status;
+    private int stock;
 }

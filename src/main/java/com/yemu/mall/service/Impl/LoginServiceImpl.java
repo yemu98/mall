@@ -1,17 +1,15 @@
-package com.yemu.mall.Service;
+package com.yemu.mall.service.Impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yemu.mall.Common.Response;
-import com.yemu.mall.Common.ResponseCode;
-import com.yemu.mall.Common.TokenUtil;
-import com.yemu.mall.entity.Token;
+import com.yemu.mall.common.Response;
+import com.yemu.mall.common.ResponseCode;
+import com.yemu.mall.common.TokenUtil;
 import com.yemu.mall.entity.User;
 import com.yemu.mall.mapper.UserMapper;
+import com.yemu.mall.service.LoginService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class LoginServiceImpl extends ServiceImpl<UserMapper,User> implements LoginService {
@@ -47,5 +45,13 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper,User> implements Lo
         else{
             return Response.error(ResponseCode.UNLOGIN.getCode(),ResponseCode.UNLOGIN.getDesc());
         }
+    }
+
+    @Override
+    public long getId(String token) {
+        if (null == token || token.isEmpty()){
+            return 0;
+        }
+        return TokenUtil.getUID(token);
     }
 }
