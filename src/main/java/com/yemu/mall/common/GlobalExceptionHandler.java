@@ -1,12 +1,19 @@
 package com.yemu.mall.common;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * 全局异常统一处理
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
-    public Response handleExceptions(Exception ex){
+    public Response handleExceptions(Exception ex, HttpServletResponse response) {
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
         return Response.error(ex.getMessage());
     }
 //    @ExceptionHandler(MethodArgumentNotValidException.class)

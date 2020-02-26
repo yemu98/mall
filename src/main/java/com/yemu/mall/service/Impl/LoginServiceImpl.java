@@ -49,7 +49,7 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper,User> implements Lo
 
     @Override
     public long getId(String token) {
-        if (null == token || token.isEmpty()){
+        if (null == token || token.length() == 0) {
             return 0;
         }
         return TokenUtil.getUID(token);

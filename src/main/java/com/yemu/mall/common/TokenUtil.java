@@ -6,7 +6,11 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.util.StringUtils;
-import java.util.*;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TokenUtil {
     /**
@@ -72,30 +76,32 @@ public class TokenUtil {
     public static boolean verifyToken(String token){
         try {
 
-            Date nowTime=new Date();
-            Date expTime=JWT.decode(token).getExpiresAt();        //已过期
+            Date nowTime = new Date();
+            Date expTime = JWT.decode(token).getExpiresAt();        //已过期
             return !nowTime.after(expTime);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public static Long getUID(String token){
-//        if (!verifyToken(token)){
-//            return Long.valueOf(0);
-//        }
-        //解码token
-        Map<String, Claim>  claimMap = decodeToken(token);
-        if (null==claimMap){
-            return null;
+    public static int getUID(String token) {
+        try {
+            //解码token
+            Map<String, Claim> claimMap = decodeToken(token);
+            if (null == claimMap) {
+                return 0;
+            }
+            //从解码后的token获取uid信息
+            Claim uid_claim = claimMap.get("uid");
+            if (null == uid_claim || StringUtils.isEmpty(uid_claim.asString())) {
+                return 0;
+            }
+            return Integer.valueOf(uid_claim.asString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
         }
-        //从解码后的token获取uid信息
-        Claim uid_claim = claimMap.get("uid");
-        if(null == uid_claim || StringUtils.isEmpty(uid_claim.asString())){
-            return Long.valueOf("");
-        }
-        return Long.valueOf(uid_claim.asString());
+
     }
 }
