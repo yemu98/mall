@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.yemu</groupId>
-    <artifactId>mall_admin</artifactId>
+    <artifactId>mall-admin</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>mall-admin</name>
-    <description>Demo project for Spring Boot</description>
+    <description>mall-admin</description>
 
     <properties>
         <java.version>1.8</java.version>
