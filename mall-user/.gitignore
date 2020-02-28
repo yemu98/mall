@@ -29,12 +29,3 @@ build/
 
 ### VS Code ###
 .vscode/
-/.mvn/
-/mvnw
-/mvnw.cmd
-/mall-common/.mvn/
-/mall-common/mvnw
-/mall-common/mvnw.cmd
-/mall-user/mvnw.cmd
-/mall-user/mvnw
-/mall-user/.mvn/

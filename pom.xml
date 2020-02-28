@@ -4,16 +4,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.yemu</groupId>
+    <groupId>com.yemu.mall</groupId>
     <artifactId>mall</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
     <name>mall</name>
     <description>a mall</description>
 
     <modules>
         <module>mall-portal</module>
         <module>mall-admin</module>
+        <module>mall-common</module>
+        <module>mall-user</module>
     </modules>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.5.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
     <properties>
         <java.version>1.8</java.version>
@@ -21,7 +32,117 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+<!--        模块版本号配置-->
+        <mall-common.version>1.0-SNAPSHOT</mall-common.version>
+        <mall-portal.version>1.0-SNAPSHOT</mall-portal.version>
+        <mall-admin.version>1.0-SNAPSHOT</mall-admin.version>
+        <mall-user.version>1.0-SNAPSHOT</mall-user.version>
     </properties>
+
+<!--    基础依赖 子模块不需再配置-->
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--            druid连接池-->
+        <!-- https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.1.21</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+        <!--            lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!--        MySQL驱动    -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <!--            MyBatis-->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+        <!--            MyBatis-plus-->
+        <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-boot-starter -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+    </dependencies>
+<!--配置依赖 主要是版本号 子模块还需要引入 只是不用配置版本号-->
+    <dependencyManagement>
+        <dependencies>
+<!--            通用模块-->
+            <dependency>
+                <groupId>com.yemu.mall</groupId>
+                <artifactId>mall-common</artifactId>
+                <version>${mall-common.version}</version>
+            </dependency>
+<!--            前台模块-->
+            <dependency>
+                <groupId>com.yemu.mall</groupId>
+                <artifactId>mall-portal</artifactId>
+                <version>${mall-portal.version}</version>
+            </dependency>
+<!--            后台管理模块-->
+            <dependency>
+                <groupId>com.yemu.mall</groupId>
+                <artifactId>mall-admin</artifactId>
+                <version>${mall-admin.version}</version>
+            </dependency>
+<!--            用户中心模块-->
+            <dependency>
+                <groupId>com.yemu.mall</groupId>
+                <artifactId>mall-user</artifactId>
+                <version>${mall-user.version}</version>
+            </dependency>
+
+
+
+<!--            JWT包-->
+            <!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>3.9.0</version>
+            </dependency>
+<!--            七牛云SDK-->
+            <dependency>
+                <groupId>com.qiniu</groupId>
+                <artifactId>qiniu-java-sdk</artifactId>
+                <version>[7.2.0, 7.2.99]</version>
+            </dependency>
+
+
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <pluginManagement>

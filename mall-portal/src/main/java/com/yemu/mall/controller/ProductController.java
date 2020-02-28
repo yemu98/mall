@@ -6,39 +6,38 @@ import com.yemu.mall.entity.Img;
 import com.yemu.mall.entity.Product;
 import com.yemu.mall.service.ImgService;
 import com.yemu.mall.service.Impl.ProductServiceImpl;
-import com.yemu.mall.service.UserUnlikeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author yemu
+ */
 @RestController
 @Validated
 @RequestMapping("/product")
 public class ProductController {
-    @Autowired
-    private ProductServiceImpl productService;
-    @Autowired
-    private ImgService imgService;
-    @Autowired
-    private UserUnlikeService userUnlikeService;
+    private final ProductServiceImpl productService;
+    private final ImgService imgService;
+
+    public ProductController(ProductServiceImpl productService, ImgService imgService) {
+        this.productService = productService;
+        this.imgService = imgService;
+    }
 
     /**
      * 获取所有商品
      *
-     * @return
+     * @return 商品列表
      */
     @GetMapping("/get")
     public Response<?> get() {
         List<Product> productList = productService.getProductList();
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(16);
         map.put("productList", getProductListWithImgList(productList));
         return Response.ok(map);
     }
@@ -46,26 +45,25 @@ public class ProductController {
 
     /**
      * 获取该商品的描述图片集合
-     *
-     * @param product
-     * @return
+     * @param product 商品
+     * @return 图片列表
      */
-    public List<Img> getImgListByProduct(Product product) {
+    private List<Img> getImgListByProduct(Product product) {
         return imgService.getByPid(product.getId());
     }
 
     /**
      * 根据商品集合返回带有商品图片的集合
      *
-     * @param productList
-     * @return
+     * @param productList 商品列表
+     * @return 带有商品图片的商品列表
      */
     public List<Map<String, Object>> getProductListWithImgList(List<Product> productList) {
 
         List<Map<String, Object>> list = new ArrayList<>();
         // 遍历集合为每个商品添加图片集合
         for (Product product : productList) {
-            Map<String, Object> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>(16);
             map.put("imgList", getImgListByProduct(product));
             map.put("product", product);
             list.add(map);
@@ -73,12 +71,17 @@ public class ProductController {
         return list;
     }
 
+    /**
+     * 根据用户过滤商品
+     * @param token 用户token
+     * @return 商品列表
+     */
     @GetMapping(value = "/getByUser")
-//    根据用户过滤商品
     public Response<?> getByUser(@RequestHeader(required = false) String token) {
         int uid = (token == null || token.isEmpty()) ? 0 : TokenUtil.getUID(token);
         List<Product> productList = productService.getByUser(uid);
-        Map<String, Object> map = new HashMap<>();
+//        HashMap指定集合初始值为16
+        Map<String, Object> map = new HashMap<>(16);
         map.put("productList", getProductListWithImgList(productList));
         return Response.ok(map);
     }
@@ -86,8 +89,8 @@ public class ProductController {
     /**
      * 搜索，搜索内容可以是商品名，品牌，描述
      *
-     * @param searchContent
-     * @return
+     * @param searchContent 搜索内容
+     * @return 搜索结果
      */
     @GetMapping("/search")
     public Response<?> search(String searchContent) {
@@ -96,7 +99,7 @@ public class ProductController {
         product.setBrand(searchContent);
         product.setInfo(searchContent);
         List<Product> productList = productService.search(product);
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(16);
         map.put("productList", getProductListWithImgList(productList));
         return Response.ok(map);
     }
@@ -104,4 +107,9 @@ public class ProductController {
     /**
      * 获取5条热销的商品
      */
+    @GetMapping("/hot/{num}")
+    public Response<?> getHot(@PathVariable("num") int num){
+        System.out.println(num);
+        return get();
+    }
 }
