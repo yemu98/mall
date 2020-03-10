@@ -5,11 +5,11 @@
         <h3>{{ item }}</h3>
       </el-carousel-item>
     </el-carousel>
-    <el-button v-on:click="addCard()">添加</el-button>
     <el-row>
-      <el-col :span="4" v-for="(card,index) in cards" :key="index">
+      <el-col :span="4" v-for="(card,index) in cards" :key="index" class="goods_wrap">
         <goodsCard @unlike="delete_card(index)" :product="card.product" :imgUrl="card.imgUrl"></goodsCard>
       </el-col>
+      <loading :loading="this.$store.state.goodCardLoading" :text="loadingText"></loading>
     </el-row>
     <el-backtop></el-backtop>
   </div>
@@ -30,14 +30,21 @@
 .el-carousel__item:nth-child(2n + 1) {
   background-color: #d3dce6;
 }
+  .goods_wrap{
+    padding: 5px;
+  }
 </style>
-
 <script>
+import loading from '../../components/loading'
 export default {
   data () {
     return {
-      cards: []
+      cards: [],
+      loadingText: '加载中'
     }
+  },
+  components: {
+    'loading': loading
   },
   methods: {
     addCard () {
@@ -45,11 +52,18 @@ export default {
         method: 'get',
         url: '/product/getByUser',
         params: {
-          'uid': this.uid
+          'uid': this.uid,
+          'pageNo': this.$store.state.pageNo,
+          'pageSize': this.$store.state.pageSize
         }
       }).then((res) => {
         var productlist = []
         productlist = res.data.data.productList
+        if (productlist.length<1){
+          this.$store.state.goodCardLoading = false
+          this.loadingText = '人家也是有底线的~~'
+          return
+        }
         productlist.forEach(element => {
           var product = element.product
           var imgs = element.imgList
@@ -64,23 +78,28 @@ export default {
           }
           this.cards.push(card)
         })
+        this.$store.state.pageNo++
+        this.$store.state.goodCardLoading = false
       })
     },
     delete_card (index) {
       this.cards.splice(index, 1)
     },
     scrollLoad () {
-      let isLoading = false
+      // let isLoading = false
       // 距离200px时加载一次
       window.onscroll = () => {
         let bottomOfWindow  = document.documentElement.offsetHeight - document.documentElement.scrollTop - window.innerHeight <= 200
-        if (bottomOfWindow && !isLoading){
-          isLoading = true
+        if (bottomOfWindow && ! this.$store.state.goodCardLoading){
+          this.$store.state.goodCardLoading = true
+          this.addCard()
         }
       }
     }
   },
   mounted: function () {
+    // 初始化页码
+     this.$store.state.pageNo = 1
     this.addCard()
     // 添加滚动事件
     this.scrollLoad()

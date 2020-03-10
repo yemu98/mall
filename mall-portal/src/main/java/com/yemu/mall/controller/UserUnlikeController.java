@@ -5,10 +5,13 @@ import com.yemu.mall.common.Response;
 import com.yemu.mall.entity.UserUnlike;
 import com.yemu.mall.service.UserUnlikeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/user/unlike")
@@ -17,8 +20,9 @@ public class UserUnlikeController {
     private UserUnlikeService userUnlikeService;
 
     @PostMapping("/add")
-    public Response<?> addUnlike(UserUnlike userUnlike){
+    public Response<?> addUnlike(@Valid UserUnlike userUnlike){
         try{
+
             userUnlikeService.getBaseMapper().insert(userUnlike);
             return Response.ok(userUnlike);
         }

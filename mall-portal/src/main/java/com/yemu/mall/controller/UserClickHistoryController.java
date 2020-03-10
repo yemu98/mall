@@ -1,23 +1,42 @@
 package com.yemu.mall.controller;
 
 import com.yemu.mall.common.Response;
+import com.yemu.mall.common.TokenUtil;
 import com.yemu.mall.entity.UserClickHistory;
 import com.yemu.mall.service.UserClickHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/user/history/click")
 public class UserClickHistoryController {
     @Autowired
     private UserClickHistoryService userClickHistoryService;
+
+    /**
+     * 根据token和pid拼装成用户点击行为对象
+     * @param token
+     * @param pid
+     * @return
+     */
     @PostMapping(value = "/add")
-    public Response<?> addClickHistory(UserClickHistory userClickHistory){
+    public Response<?> addClickHistory(@RequestHeader(required = false) String token,
+                                       @Valid int pid){
         try{
-            userClickHistoryService.getBaseMapper().insert(userClickHistory);
-            return Response.ok(userClickHistory);
+            int uid = TokenUtil.getUID(token);
+            if (uid!=0){
+                UserClickHistory userClickHistory = new UserClickHistory();
+                userClickHistory.setUid(uid);
+                userClickHistory.setPid(pid);
+                userClickHistoryService.getBaseMapper().insert(userClickHistory);
+                return Response.ok(userClickHistory);
+            }
+            return Response.error("用户未登录");
         }
         catch (Exception e){
             e.printStackTrace();

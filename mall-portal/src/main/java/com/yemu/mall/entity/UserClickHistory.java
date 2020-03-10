@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 @Data
@@ -16,6 +17,7 @@ public class UserClickHistory {
     @TableId(value = "id",type = IdType.AUTO)
     private int id;
     private int uid;
+    @NotNull(message = "pid 不能为空")
     private int pid;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @TableField("create_time")

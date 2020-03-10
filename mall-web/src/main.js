@@ -38,7 +38,9 @@ router.beforeEach((to, from, next) => {
 // 添加axios拦截器 让请求时在header中带上token
 axios.interceptors.request.use(
   config => {
-    if (localStorage.token!=null) {  // 判断是否存在token
+    // 判断是否存在token
+    if (localStorage.token!=null) {  
+      // 从localStorage取token放入请求头
       config.headers.token = localStorage.token 
     }
     return config;

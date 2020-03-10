@@ -1,5 +1,8 @@
 package com.yemu.mall.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yemu.mall.common.Response;
 import com.yemu.mall.common.TokenUtil;
 import com.yemu.mall.entity.Img;
@@ -35,8 +38,11 @@ public class ProductController {
      * @return 商品列表
      */
     @GetMapping("/get")
-    public Response<?> get() {
-        List<Product> productList = productService.getProductList();
+    public Response<?> get(@RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize,
+                           @RequestParam(value = "pageNo",required = false,defaultValue = "1") int pageNo) {
+        IPage<Product> iPage = new Page<>(pageNo,pageSize);
+        List<Product> productList = productService.page(iPage).getRecords();
+//        List<Product> productList = productService.getProductList();
         Map<String, Object> map = new HashMap<>(16);
         map.put("productList", getProductListWithImgList(productList));
         return Response.ok(map);
@@ -77,9 +83,15 @@ public class ProductController {
      * @return 商品列表
      */
     @GetMapping(value = "/getByUser")
-    public Response<?> getByUser(@RequestHeader(required = false) String token) {
+    public Response<?> getByUser(@RequestHeader(required = false) String token,
+                                 @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize,
+                                 @RequestParam(value = "pageNo",required = false,defaultValue = "1") int pageNo) {
         int uid = (token == null || token.isEmpty()) ? 0 : TokenUtil.getUID(token);
-        List<Product> productList = productService.getByUser(uid);
+        IPage<Product> iPage = new Page<>(pageNo,pageSize);
+
+       List<Product> productList = productService.page(iPage).getRecords();
+//        List<Product> productList = productService.getByUser(uid,pageNo,pageSize);
+        iPage.setRecords(productList);
 //        HashMap指定集合初始值为16
         Map<String, Object> map = new HashMap<>(16);
         map.put("productList", getProductListWithImgList(productList));
@@ -110,6 +122,6 @@ public class ProductController {
     @GetMapping("/hot/{num}")
     public Response<?> getHot(@PathVariable("num") int num){
         System.out.println(num);
-        return get();
+        return get(10,1);
     }
 }

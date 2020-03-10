@@ -8,7 +8,10 @@ export default new Vuex.Store({
   state: {
     uid: '',
     searchContent: '',
-    isLogin: false
+    isLogin: false,
+    pageNo: 1,
+    pageSize: 12,
+    goodCardLoading: false
   },
   mutations: {
   },

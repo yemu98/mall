@@ -25,8 +25,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
      */
 
     @Override
-    public List<Product> getByUser(int uid) {
-        return getBaseMapper().findByUid(uid);
+    public List<Product> getByUser(int uid,int pageNo,int pageSize) {
+        return getBaseMapper().findByUid(uid,pageNo,pageSize);
     }
 
     @Override
