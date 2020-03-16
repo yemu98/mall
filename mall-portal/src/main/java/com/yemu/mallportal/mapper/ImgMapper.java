@@ -6,5 +6,6 @@ import com.yemu.mallportal.entity.Img;
 import java.util.List;
 
 public interface ImgMapper extends BaseMapper<Img> {
-    List<Img> getByPid(int pid);
+    List<Img> getMain(int pid);
+    List<Img> getDetail(int pid);
 }

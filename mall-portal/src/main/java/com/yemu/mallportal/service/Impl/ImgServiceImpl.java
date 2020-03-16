@@ -11,7 +11,12 @@ import java.util.List;
 @Service
 public class ImgServiceImpl extends ServiceImpl<ImgMapper, Img> implements ImgService {
     @Override
-    public List<Img> getByPid(int pid) {
-        return baseMapper.getByPid(pid);
+    public List<Img> getMain(int pid) {
+        return baseMapper.getMain(pid);
+    }
+
+    @Override
+    public List<Img> getDetail(int pid) {
+        return getBaseMapper().getDetail(pid);
     }
 }

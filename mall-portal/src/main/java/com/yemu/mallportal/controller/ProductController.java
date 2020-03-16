@@ -55,7 +55,7 @@ public class ProductController {
      * @return 图片列表
      */
     private List<Img> getImgListByProduct(Product product) {
-        return imgService.getByPid(product.getId());
+        return imgService.getMain(product.getId());
     }
 
     /**

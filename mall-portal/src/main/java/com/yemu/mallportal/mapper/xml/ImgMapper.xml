@@ -8,7 +8,10 @@
         <result column="name" property="name" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <select id="getByPid" resultMap="ImgMap">
+    <select id="getMain" resultMap="ImgMap">
         select * from img where pid = #{pid}
+    </select>
+    <select id="getDetail" resultMap="ImgMap">
+        select * from product_detail_img where pid = #{pid}
     </select>
 </mapper>
