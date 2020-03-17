@@ -2,6 +2,7 @@ package com.yemu.mallportal.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yemu.mallportal.common.R;
 import com.yemu.mallportal.common.Response;
 import com.yemu.mallportal.common.TokenUtil;
 import com.yemu.mallportal.entity.Img;
@@ -123,5 +124,16 @@ public class ProductController {
     public Response<?> getHot(@PathVariable("num") int num){
         System.out.println(num);
         return get(10,1);
+    }
+
+    /**
+     * 根据商品id查询
+     */
+    @GetMapping("/{pid}")
+    public R get(@PathVariable("pid") int pid){
+        Map<String,Object> map = new HashMap<>(16);
+        map.put("product",productService.getById(pid));
+        map.put("imgList",imgService.getMain(pid));
+        return R.ok(map);
     }
 }

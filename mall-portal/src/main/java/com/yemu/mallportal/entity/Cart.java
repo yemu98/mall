@@ -8,14 +8,16 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-//@Accessors(chain = true)
+@Accessors(chain = true)
 @Data
 @TableName("cart")
 public class Cart {
+    @JsonFormat
     @TableId(value = "id",type = IdType.AUTO)
     private int id;
     private int uid;
     private int pid;
+    private int num;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField("create_time")
     private String createTime;

@@ -39,4 +39,5 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
                 .like("brand", product.getBrand());
         return baseMapper.selectList(queryWrapper);
     }
+
 }
