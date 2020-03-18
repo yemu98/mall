@@ -3,12 +3,12 @@ package com.yemu.mallportal.controller;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.yemu.mallportal.common.R;
 import com.yemu.mallportal.common.TokenUtil;
-import com.yemu.mallportal.entity.Cart;
-import com.yemu.mallportal.entity.Product;
+import com.yemu.mallportal.entity.CartItem;
+import com.yemu.mallportal.model.CartItemModel;
+import com.yemu.mallportal.model.CartModel;
 import com.yemu.mallportal.service.CartService;
 import com.yemu.mallportal.service.ImgService;
 import com.yemu.mallportal.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,28 +21,27 @@ import java.util.Map;
 @Validated
 @RequestMapping("/cart")
 public class CartController {
-    @Autowired
-    private CartService cartService;
-    @Autowired
-    private ProductService productService;
-    @Autowired
-    private ImgService imgService;
+    private final CartService cartService;
+    private final ProductService productService;
+    private final ImgService imgService;
+
+    public CartController(CartService cartService, ProductService productService, ImgService imgService) {
+        this.cartService = cartService;
+        this.productService = productService;
+        this.imgService = imgService;
+    }
+
     /**
      * 向购物车添加
      */
     @PostMapping("")
-    public R add(@RequestHeader(required = false) String token, int pid){
+    public R<?> add(@RequestHeader(required = false) String token, CartItem cartItem){
         int uid = (token == null || token.isEmpty()) ? 0 : TokenUtil.getUID(token);
         if (uid==0){
             return R.error("用户未登录！");
         }
-        Cart cart = new Cart().setPid(pid).setUid(uid);
-//        Cart cart = new Cart();
-//        cart.setUid(uid).setPid(pid);
-//        cart.setUid(uid);
-//        cart.setPid(pid);
-        cartService.add(cart);
-        return  R.ok(cart);
+        cartItem.setUid(uid);
+        return cartService.add(cartItem)!=null?R.ok("加入购物车成功！",cartItem):R.error("加入购物车失败!");
 
     }
     /**
@@ -50,42 +49,61 @@ public class CartController {
      */
 
     @GetMapping("")
-    public R get(@RequestHeader(required = false) String token){
+    public R<?> get(@RequestHeader(required = false) String token){
         int uid = (token == null || token.isEmpty()) ? 0 : TokenUtil.getUID(token);
         if (uid==0){
             return R.error("用户未登录！");
         }
-        List<Cart> cartList = cartService.getCartByUid(uid);
-        List<Map<String,Object>> productList = new ArrayList<>();
-        for (Cart cart : cartList){
-            Map<String,Object> productMap = new HashMap<>(16);
-            productMap.put("product",productService.getById(cart.getPid()));
-            productMap.put("imgList",imgService.getMain(cart.getPid()));
-            productList.add(productMap);
+        List<CartItem> cartItemList = cartService.getCartByUid(uid);
+        List<Map<String,?>> cart = new ArrayList<>();
+        for (CartItem cartItem : cartItemList){
+            Map<String,Object> item = new HashMap<>(16);
+            item.put("product",productService.getById(cartItem.getPid()));
+            item.put("imgList",imgService.getMain(cartItem.getPid()));
+            item.put("num",cartItem.getNum());
+            item.put("cartItemId",cartItem.getId());
+            cart.add(item);
         }
-        Map<String,List<?>> map = new HashMap<>(16);
-        map.put("cart",cartList);
-        map.put("prodcutList",productList);
-        return R.ok(map);
+        return R.ok(cart);
     }
     /**
-     * 更新购物车
+     * 局部更新购物车
      */
-    /// 报错 请求不到
     @PatchMapping("/{id}")
-    public R update(@RequestHeader(required = false) String token,
-                    @PathVariable("id") int id,int pid,int num){
+    public R<?> update(@RequestHeader(required = false) String token,
+                    @PathVariable("id") int id,int pid, int num){
         int uid = (token == null || token.isEmpty()) ? 0 : TokenUtil.getUID(token);
         if (uid==0){
             return R.error("用户未登录！");
         }
-        Cart cart = new Cart().setId(id).setUid(uid).setPid(pid).setNum(num);
-        UpdateWrapper<Cart> updateWrapper = new UpdateWrapper<>();
+        CartItem cartItem = new CartItem().setId(id).setUid(uid).setPid(pid).setNum(num);
+        UpdateWrapper<CartItem> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("uid",uid).eq("pid",pid);
-        cartService.getBaseMapper().update(cart,updateWrapper);
-        return get(token);
+        cartService.getBaseMapper().update(cartItem,updateWrapper);
+        return R.ok(cartItem);
     }
     /**
      * 清空购物车
      */
+    @DeleteMapping("")
+    public R<?> delete(@RequestHeader String token){
+        int uid = (token == null || token.isEmpty()) ? 0 : TokenUtil.getUID(token);
+        if (uid==0){
+            return R.error("用户未登录！");
+        }
+        UpdateWrapper<CartItem> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("uid",uid);
+        return cartService.getBaseMapper().delete(updateWrapper)>0?R.ok("清空成功"):R.ok("清空失败");
+    }
+    /**
+     * 从购物车删除某商品
+     */
+    @DeleteMapping("/{id}")
+    public R<?> deleteProduct(@RequestHeader String token,@PathVariable("id") int id){
+        int uid = (token == null || token.isEmpty()) ? 0 : TokenUtil.getUID(token);
+        if (uid==0){
+            return R.error("用户未登录！");
+        }
+        return cartService.getBaseMapper().deleteById(id)>0?R.ok("删除成功！"):R.error("删除失败！");
+    }
 }

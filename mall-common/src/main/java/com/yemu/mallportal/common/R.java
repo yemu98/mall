@@ -4,76 +4,66 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 
+
+
 public class R<T> extends ResponseEntity<T> {
-    private HttpStatus status;
-    private String message="";
-    private T data;
 
-    private R(HttpStatus status){
-        super(status);
-        this.status=status;
-    }
 
-    private R(HttpStatus status, String message){
-        super((T) message,status);
-        this.status=status;
-        this.message=message;
-    }
-    private R(HttpStatus status, T data){
-        super(data,status);
-        this.status=status;
-        this.message = status.toString();
-        this.data=data;
-    }
-    private R(HttpStatus status, String message, T data){
-        super(data,status);
-        this.status=status;
-        this.message=message;
-        this.data=data;
+    private R(HttpStatus status,PlayLoad playLoad){
+        super((T) playLoad,status);
     }
 
 
     public static <T> R<T> ok(T data){
-        return new R<>(HttpStatus.OK, data);
+        PlayLoad<T> playLoad = new PlayLoad<>(HttpStatus.OK.value(),HttpStatus.OK.toString(),data);
+        return new R<>(HttpStatus.OK, playLoad);
     }
     public static <T> R<T> ok(String message,T data){
-        return new R<>(HttpStatus.OK,message,data);
+        PlayLoad<T> playLoad = new PlayLoad<>(HttpStatus.OK.value(),message,data);
+        return new R<>(HttpStatus.OK, playLoad);
     }
     public static <T> R<T> ok(String message){
-        return new R<>(HttpStatus.OK,message);
+        PlayLoad<T> playLoad = new PlayLoad<>(HttpStatus.OK.value(),message,null);
+        return new R<>(HttpStatus.OK, playLoad);
     }
     public static <T> R<T> error(){
-        return new R<>(HttpStatus.BAD_REQUEST);
+        PlayLoad<T> playLoad = new PlayLoad<>(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST.toString(),null);
+        return new R<>(HttpStatus.BAD_REQUEST, playLoad);
     }
     public static <T> R<T> error(String message){
-        return new R<>(HttpStatus.BAD_REQUEST,message);
+        PlayLoad<T> playLoad = new PlayLoad<>(HttpStatus.BAD_REQUEST.value(),message,null);
+        return new R<>(HttpStatus.BAD_REQUEST, playLoad);
     }
     public static <T> R<T> error(HttpStatus status,String message){
-        return new R<>(status,message);
+        PlayLoad<T> playLoad = new PlayLoad<>(status.value(),message,null);
+        return new R<>(status, playLoad);
     }
 
-    public HttpStatus getStatus() {
-        return status;
-    }
 
-    public void setStatus(HttpStatus status) {
-        this.status = status;
-    }
 
-    public String getMessage() {
-        return message;
-    }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
 
-    public T getData() {
-        return data;
-    }
+    private static class PlayLoad<T>{
+        int status;
+        String message;
+        T data;
 
-    public void setData(T data) {
-        this.data = data;
-    }
+        PlayLoad(int status,String message,T data){
+            this.status = status;
+            this.message = message;
+            this.data = data;
+        }
+        public int getStatus() {
+            return status;
+        }
+        public String getMessage() {
+            return message;
+        }
 
+
+
+        public T getData() {
+            return data;
+        }
+    }
 }

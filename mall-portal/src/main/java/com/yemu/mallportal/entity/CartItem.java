@@ -5,19 +5,21 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Accessors(chain = true)
 @Data
-@TableName("cart")
-public class Cart {
+//@TableName("cart")
+public class CartItem {
     @JsonFormat
     @TableId(value = "id",type = IdType.AUTO)
     private int id;
     private int uid;
     private int pid;
-    private int num;
+    private Integer num=1;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField("create_time")
     private String createTime;

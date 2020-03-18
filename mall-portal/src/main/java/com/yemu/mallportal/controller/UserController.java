@@ -12,6 +12,10 @@ import javax.validation.constraints.NotBlank;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author yemu
+ * @date
+ */
 @RestController//=@ResponseBody+@Controller
 @RequestMapping("/user")
 @Validated//参数验证
@@ -43,7 +47,7 @@ public class UserController {
 
     @GetMapping("/existByPhone")
     public Response<?> existByPhone(@NotBlank(message = "参数缺失") String phone){
-        Map<String, Boolean> map=new HashMap<>();
+        Map<String, Boolean> map=new HashMap<>(16);
         map.put("exist",userService.existUserByPhone(phone));
         return Response.ok(map);
     }

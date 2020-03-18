@@ -34,7 +34,7 @@ public class LoginController {
     public Response<?> getId(@RequestHeader(required = false)String token){
         try{
             long uid = loginService.getId(token);
-            Map<String, Long> map = new HashMap<>();
+            Map<String, Long> map = new HashMap<>(16);
             map.put("uid",uid);
             return Response.ok(map);
         }

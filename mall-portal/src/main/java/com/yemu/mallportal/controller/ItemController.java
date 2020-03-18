@@ -8,7 +8,6 @@ import com.yemu.mallportal.entity.Img;
 import com.yemu.mallportal.entity.Product;
 import com.yemu.mallportal.model.Item;
 import com.yemu.mallportal.service.ImgService;
-import com.yemu.mallportal.service.Impl.ProductServiceImpl;
 import com.yemu.mallportal.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

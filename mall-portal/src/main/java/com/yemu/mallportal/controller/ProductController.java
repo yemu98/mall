@@ -8,7 +8,7 @@ import com.yemu.mallportal.common.TokenUtil;
 import com.yemu.mallportal.entity.Img;
 import com.yemu.mallportal.entity.Product;
 import com.yemu.mallportal.service.ImgService;
-import com.yemu.mallportal.service.Impl.ProductServiceImpl;
+import com.yemu.mallportal.service.impl.ProductServiceImpl;
 import com.yemu.mallportal.service.ProductService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
