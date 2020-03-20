@@ -49,13 +49,17 @@ public class ItemController {
     @GetMapping(value = "/{id}")
     public R get(@PathVariable("id") Integer id) {
         Product product = productService.getById(id);
-        List<Img> imgList = imgService.getMain(product.getId());
-        Item item = new Item();
-        item.setProduct(product);
-        item.setImgList(imgList);
-        List<Img> deatilImgList = imgService.getDetail(product.getId());
-        item.setDetailImgList(deatilImgList);
-//      return ResponseEntity.badRequest().body(Response.ok(product));
-        return null!=product ? R.ok(item): R.error(HttpStatus.NOT_FOUND,"无此商品");
+        if (product!=null){
+            List<Img> imgList = imgService.getMain(product.getId());
+            Item item = new Item();
+            item.setProduct(product);
+            item.setImgList(imgList);
+            List<Img> deatilImgList = imgService.getDetail(product.getId());
+            item.setDetailImgList(deatilImgList);
+            return R.ok(item);
+        }
+        else{
+            return R.error(HttpStatus.NOT_FOUND,"无此商品");
+        }
     }
 }

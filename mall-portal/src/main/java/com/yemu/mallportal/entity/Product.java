@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.yemu.mallportal.DecimalSerialize;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -18,6 +20,7 @@ public class Product {
     private String info;
     private String name;
     private String brand;
+    @JsonSerialize(using = DecimalSerialize.class)
     private BigDecimal price;
     private String category;
     private String status;

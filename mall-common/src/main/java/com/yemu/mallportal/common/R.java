@@ -4,51 +4,48 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 
-
-
 public class R<T> extends ResponseEntity<T> {
 
 
-    private R(HttpStatus status,PlayLoad playLoad){
-        super((T) playLoad,status);
+    private R(HttpStatus status,PayLoad<T> payLoad){
+        super((T) payLoad, status);
     }
-
 
     public static <T> R<T> ok(T data){
-        PlayLoad<T> playLoad = new PlayLoad<>(HttpStatus.OK.value(),HttpStatus.OK.toString(),data);
-        return new R<>(HttpStatus.OK, playLoad);
+        PayLoad<T> payLoad = new PayLoad<>(HttpStatus.OK.value(),HttpStatus.OK.toString(),data);
+        return new R<>(HttpStatus.OK, payLoad);
     }
     public static <T> R<T> ok(String message,T data){
-        PlayLoad<T> playLoad = new PlayLoad<>(HttpStatus.OK.value(),message,data);
-        return new R<>(HttpStatus.OK, playLoad);
+        PayLoad<T> payLoad = new PayLoad<>(HttpStatus.OK.value(),message,data);
+        return new R<>(HttpStatus.OK, payLoad);
     }
     public static <T> R<T> ok(String message){
-        PlayLoad<T> playLoad = new PlayLoad<>(HttpStatus.OK.value(),message,null);
-        return new R<>(HttpStatus.OK, playLoad);
+        PayLoad<T> payLoad = new PayLoad<>(HttpStatus.OK.value(),message,null);
+        return new R<>(HttpStatus.OK, payLoad);
     }
     public static <T> R<T> error(){
-        PlayLoad<T> playLoad = new PlayLoad<>(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST.toString(),null);
-        return new R<>(HttpStatus.BAD_REQUEST, playLoad);
+        PayLoad<T> payLoad = new PayLoad<>(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST.toString(),null);
+        return new R<>(HttpStatus.BAD_REQUEST, payLoad);
     }
     public static <T> R<T> error(String message){
-        PlayLoad<T> playLoad = new PlayLoad<>(HttpStatus.BAD_REQUEST.value(),message,null);
-        return new R<>(HttpStatus.BAD_REQUEST, playLoad);
+        PayLoad<T> payLoad = new PayLoad<>(HttpStatus.BAD_REQUEST.value(),message,null);
+        return new R<>(HttpStatus.BAD_REQUEST, payLoad);
     }
     public static <T> R<T> error(HttpStatus status,String message){
-        PlayLoad<T> playLoad = new PlayLoad<>(status.value(),message,null);
-        return new R<>(status, playLoad);
+        PayLoad<T> payLoad = new PayLoad<>(status.value(),message,null);
+        return new R<>(status, payLoad);
     }
 
 
 
 
 
-    private static class PlayLoad<T>{
+    private static class PayLoad<T>{
         int status;
         String message;
         T data;
 
-        PlayLoad(int status,String message,T data){
+        PayLoad(int status,String message,T data){
             this.status = status;
             this.message = message;
             this.data = data;
@@ -59,9 +56,6 @@ public class R<T> extends ResponseEntity<T> {
         public String getMessage() {
             return message;
         }
-
-
-
         public T getData() {
             return data;
         }

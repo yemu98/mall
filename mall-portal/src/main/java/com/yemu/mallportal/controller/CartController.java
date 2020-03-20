@@ -12,6 +12,7 @@ import com.yemu.mallportal.service.ProductService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,20 +68,27 @@ public class CartController {
         return R.ok(cart);
     }
     /**
-     * 局部更新购物车
+     * 更新购物车某项
      */
     @PatchMapping("/{id}")
     public R<?> update(@RequestHeader(required = false) String token,
-                    @PathVariable("id") int id,int pid, int num){
+                    @PathVariable("id") int id, int num){
         int uid = (token == null || token.isEmpty()) ? 0 : TokenUtil.getUID(token);
         if (uid==0){
             return R.error("用户未登录！");
         }
-        CartItem cartItem = new CartItem().setId(id).setUid(uid).setPid(pid).setNum(num);
-        UpdateWrapper<CartItem> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("uid",uid).eq("pid",pid);
-        cartService.getBaseMapper().update(cartItem,updateWrapper);
-        return R.ok(cartItem);
+        CartItem cartItem = cartService.getById(id);
+        if (cartItem!=null){
+            cartItem.setNum(num);
+            if (num>productService.getById(cartItem.getPid()).getStock()){
+                return R.error("库存不足！");
+            }
+            UpdateWrapper<CartItem> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("id",id);
+            return cartService.getBaseMapper().update(cartItem,updateWrapper)>0?R.ok(cartItem):R.error("更新失败");
+        }else {
+            return R.error("没有此记录");
+        }
     }
     /**
      * 清空购物车
@@ -93,10 +101,10 @@ public class CartController {
         }
         UpdateWrapper<CartItem> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("uid",uid);
-        return cartService.getBaseMapper().delete(updateWrapper)>0?R.ok("清空成功"):R.ok("清空失败");
+        return cartService.getBaseMapper().delete(updateWrapper)>0?R.ok("清空成功"):R.error("清空失败");
     }
     /**
-     * 从购物车删除某商品
+     * 从购物车删除某项
      */
     @DeleteMapping("/{id}")
     public R<?> deleteProduct(@RequestHeader String token,@PathVariable("id") int id){
