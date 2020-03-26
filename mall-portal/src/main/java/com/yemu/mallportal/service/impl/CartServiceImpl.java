@@ -23,7 +23,7 @@ public class CartServiceImpl extends ServiceImpl<CartItemMapper, CartItem> imple
             wrapper.eq("pid", cartItem.getPid());
             List<CartItem> cartItems = baseMapper.selectList(wrapper);
             if (cartItems.size()>0){
-                UpdateWrapper updateWrapper = new UpdateWrapper();
+                UpdateWrapper<CartItem> updateWrapper = new UpdateWrapper<>();
                 updateWrapper.eq("uid", cartItem.getUid());
                 updateWrapper.eq("pid", cartItem.getPid());
                 cartItem.setNum(cartItems.get(0).getNum()+ cartItem.getNum());
@@ -41,15 +41,15 @@ public class CartServiceImpl extends ServiceImpl<CartItemMapper, CartItem> imple
 
     @Override
     public List<CartItem> getCartByUid(int uid) {
-        QueryWrapper<CartItem> queryWrapper = new QueryWrapper();
+        QueryWrapper<CartItem> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("uid",uid);
         return baseMapper.selectList(queryWrapper);
     }
 
     @Override
-    public boolean deleteProduct(CartItem cartItem) {
-        UpdateWrapper<CartItem> deleteWrapper = new UpdateWrapper();
-        deleteWrapper.eq("uid", cartItem.getUid()).eq("pid", cartItem.getPid());
-        return baseMapper.delete(deleteWrapper)>0?true:false;
+    public boolean deleteCartItem(CartItem cartItem) {
+        UpdateWrapper<CartItem> deleteWrapper = new UpdateWrapper<>();
+        deleteWrapper.eq("uid", cartItem.getUid()).eq("id",cartItem.getId());
+        return baseMapper.delete(deleteWrapper) > 0;
     }
 }

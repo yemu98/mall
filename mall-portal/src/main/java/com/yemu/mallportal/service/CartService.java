@@ -8,5 +8,5 @@ import java.util.List;
 public interface CartService extends IService<CartItem> {
     CartItem add(CartItem cartItem);
     List<CartItem> getCartByUid(int uid);
-    boolean deleteProduct(CartItem cartItem);
+    boolean deleteCartItem(CartItem cartItem);
 }

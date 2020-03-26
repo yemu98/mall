@@ -36,6 +36,18 @@ public class R<T> extends ResponseEntity<T> {
         return new R<>(status, payLoad);
     }
 
+    /**
+     * 自定义错误状态码以请求成功形式返回
+     * @param status 状态码
+     * @param message 信息
+     * @param <T> 泛型
+     * @return 封装的信息
+     */
+    public static <T> R<T> error(int status,String message){
+        PayLoad<T> payLoad = new PayLoad<>(status,message,null);
+        return new R<>(HttpStatus.OK, payLoad);
+    }
+
 
 
 

@@ -1,18 +1,16 @@
 package com.yemu.mallportal.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.yemu.mallportal.common.R;
 import com.yemu.mallportal.common.TokenUtil;
 import com.yemu.mallportal.entity.CartItem;
-import com.yemu.mallportal.model.CartItemModel;
-import com.yemu.mallportal.model.CartModel;
 import com.yemu.mallportal.service.CartService;
 import com.yemu.mallportal.service.ImgService;
 import com.yemu.mallportal.service.ProductService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,15 +56,38 @@ public class CartController {
         List<CartItem> cartItemList = cartService.getCartByUid(uid);
         List<Map<String,?>> cart = new ArrayList<>();
         for (CartItem cartItem : cartItemList){
-            Map<String,Object> item = new HashMap<>(16);
-            item.put("product",productService.getById(cartItem.getPid()));
-            item.put("imgList",imgService.getMain(cartItem.getPid()));
-            item.put("num",cartItem.getNum());
-            item.put("cartItemId",cartItem.getId());
-            cart.add(item);
+            cart.add(getCartModel(cartItem));
         }
         return R.ok(cart);
     }
+
+    /**
+     * 根据cartItem拼装成返回前端的数据格式
+     * @param cartItem 购物车项
+     * @return cartModel
+     */
+    private Map<String,Object> getCartModel(CartItem cartItem){
+        Map<String,Object> cartModel = new HashMap<>(16);
+        cartModel.put("product",productService.getById(cartItem.getPid()));
+        cartModel.put("imgList",imgService.getMain(cartItem.getPid()));
+        cartModel.put("num",cartItem.getNum());
+        cartModel.put("cartItemId",cartItem.getId());
+        return cartModel;
+    }
+
+    /**
+     * 根据购物车id获取购物车详情
+     */
+    @GetMapping("{id}")
+    public R<?> getByCartItemId(@RequestHeader String token,@PathVariable("id") int id){
+        int uid = TokenUtil.getUID(token);
+        QueryWrapper<CartItem> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("uid",uid).eq("id",id);
+        CartItem cartItem = cartService.getBaseMapper().selectOne(queryWrapper);
+        
+        return R.ok(getCartModel(cartItem));
+    }
+
     /**
      * 更新购物车某项
      */
@@ -112,6 +133,7 @@ public class CartController {
         if (uid==0){
             return R.error("用户未登录！");
         }
-        return cartService.getBaseMapper().deleteById(id)>0?R.ok("删除成功！"):R.error("删除失败！");
+        CartItem cartItem = new CartItem().setId(id).setUid(uid);
+        return cartService.deleteCartItem(cartItem)?R.ok("删除成功！"):R.error("删除失败！");
     }
 }

@@ -14,7 +14,8 @@ import java.math.BigDecimal;
  * @date 2020/3/18
  */
 @Data
-@TableName(value = "order")
+// 实体类与表名不一致
+@TableName(value = "order_main")
 public class Order {
     @JsonFormat
     @TableId(value = "id",type = IdType.AUTO)
@@ -28,6 +29,8 @@ public class Order {
     @TableField("address_id")
     private int addressId;
     private String status;
+    private String remarks;
+    private String payWay;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField("create_time")
     private String createTime;
