@@ -88,6 +88,7 @@ public class ProductController {
                                  @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize,
                                  @RequestParam(value = "pageNo",required = false,defaultValue = "1") int pageNo) {
         int uid = (token == null || token.isEmpty()) ? 0 : TokenUtil.getUID(token);
+
         IPage<Product> iPage = new Page<>(pageNo,pageSize);
 
        List<Product> productList = productService.page(iPage).getRecords();
@@ -130,10 +131,19 @@ public class ProductController {
      * 根据商品id查询
      */
     @GetMapping("/{pid}")
-    public R get(@PathVariable("pid") int pid){
+    public R<?> get(@PathVariable("pid") int pid){
         Map<String,Object> map = new HashMap<>(16);
         map.put("product",productService.getById(pid));
         map.put("imgList",imgService.getMain(pid));
         return R.ok(map);
+    }
+
+    /**
+     * 获取商品库存
+     */
+    @GetMapping("/{id}/stock")
+    public R<?> getStock(@PathVariable("id") int id){
+        int stock = productService.getById(id).getStock();
+        return R.ok(stock);
     }
 }

@@ -11,5 +11,5 @@ import com.yemu.mallportal.entity.User;
  * @date 2020/3/25
  */
 public interface OrderService extends IService<Order> {
-    Order createOrder(CartItem cartItem, Address address,User user,String payWay,String remarks);
+    Order createOrder(CartItem cartItem, Address address,User user,String payWay,String remarks) throws Exception;
 }

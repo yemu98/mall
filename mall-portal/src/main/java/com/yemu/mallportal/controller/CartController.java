@@ -84,7 +84,9 @@ public class CartController {
         QueryWrapper<CartItem> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("uid",uid).eq("id",id);
         CartItem cartItem = cartService.getBaseMapper().selectOne(queryWrapper);
-        
+        if (cartItem==null){
+            return R.error(404,"无此项");
+        }
         return R.ok(getCartModel(cartItem));
     }
 
