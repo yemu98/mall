@@ -11,4 +11,5 @@ import java.util.List;
  */
 public interface AddressService extends IService<Address> {
     List<Address> getByUser(int uid);
+
 }

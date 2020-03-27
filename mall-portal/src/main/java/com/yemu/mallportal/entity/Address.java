@@ -21,6 +21,7 @@ public class Address {
     private String name;
     private String address;
     private String phone;
+    private boolean status = true;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField("create_time")
     private String createTime;

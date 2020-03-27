@@ -20,8 +20,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     /**
      * 根据uid过滤获取商品集合
      *
-     * @param uid
-     * @return
+     * @param uid uid
+     * @return 商品
      */
 
     @Override
@@ -31,13 +31,21 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     @Override
     public List<Product> search(Product product) {
-        QueryWrapper<Product> queryWrapper = new QueryWrapper();
+        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
         queryWrapper.like("name", product.getName())
                 .or()
                 .like("info", product.getInfo())
                 .or()
                 .like("brand", product.getBrand());
         return baseMapper.selectList(queryWrapper);
+    }
+
+    @Override
+    public List<Product> getHot(int num) {
+        if (num==0){
+            num=10;
+        }
+        return getBaseMapper().getHot(num);
     }
 
 }

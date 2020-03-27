@@ -10,6 +10,7 @@ import com.yemu.mallportal.entity.Product;
 import com.yemu.mallportal.service.ImgService;
 import com.yemu.mallportal.service.impl.ProductServiceImpl;
 import com.yemu.mallportal.service.ProductService;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -119,12 +120,18 @@ public class ProductController {
     }
 
     /**
-     * 获取5条热销的商品
+     * 获取num条热销的商品
      */
-    @GetMapping("/hot/{num}")
-    public Response<?> getHot(@PathVariable("num") int num){
-        System.out.println(num);
-        return get(10,1);
+    @GetMapping("/hot")
+    public R<?> getHot(@RequestParam(value = "num",required = false,defaultValue = "10") Integer num){
+        return R.ok(productService.getHot(num));
+    }
+    @GetMapping(value = {"/hot/{num}"})
+    public R<?> getHot2(@PathVariable(required = false) Integer num){
+        if (num==null){
+            num=10;
+        }
+        return R.ok(productService.getHot(num));
     }
 
     /**

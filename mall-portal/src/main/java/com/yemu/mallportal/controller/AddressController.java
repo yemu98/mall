@@ -73,6 +73,7 @@ public class AddressController {
         }
         address.setUid(uid);
        try{
+           address.setStatus(true);
            addressService.getBaseMapper().insert(address);
            return R.ok("添加成功");
        }
@@ -84,6 +85,7 @@ public class AddressController {
 
     /**
      * 根据地址id删除地址
+     * 不能真的删除 因为订单可能要用到
      */
     @DeleteMapping("{id}")
     public R<?> delete(@RequestHeader String token, @PathVariable("id")int id){
@@ -91,10 +93,15 @@ public class AddressController {
         if (uid==0){
             return R.error("未登录");
         }
-        QueryWrapper<Address> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("uid",uid);
-        queryWrapper.eq("id",id);
-        return addressService.getBaseMapper().delete(queryWrapper)>0?R.ok("删除成功"):R.error("删除失败");
+        Address address = addressService.getById(id);
+        if (address!=null){
+            address.setStatus(false);
+        }
+        return update(token,id,address);
+//        QueryWrapper<Address> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq("uid",uid);
+//        queryWrapper.eq("id",id);
+//        return addressService.getBaseMapper().delete(queryWrapper)>0?R.ok("删除成功"):R.error("删除失败");
     }
 
 

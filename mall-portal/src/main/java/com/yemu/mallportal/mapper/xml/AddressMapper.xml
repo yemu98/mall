@@ -7,13 +7,14 @@
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="address" property="address" jdbcType="VARCHAR"/>
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
 
     <select id="getByUser" resultMap="AddressMap">
-        select * from address where uid=#{uid}
+        select * from address where uid=#{uid} and status = true
     </select>
 
 </mapper>
