@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author yemuc
@@ -70,6 +71,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
     }
 
+    @Override
+    public List<Order> search(int uid, String content) {
+        return baseMapper.search(uid,content);
+    }
+
     /***
      * 生成订单
      * @param cartItem 购物车项
@@ -87,7 +93,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setNumber(cartItem.getNum());
         order.setTotal(product.getPrice().multiply(BigDecimal.valueOf(cartItem.getNum())));
         order.setAddressId(address.getId());
-        order.setStatus("已创建订单");
+        order.setStatus(0);
         order.setRemarks(remarks);
         order.setPayWay(payWay);
         createOrderNumber(order);

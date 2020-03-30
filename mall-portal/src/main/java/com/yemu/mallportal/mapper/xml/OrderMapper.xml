@@ -9,10 +9,16 @@
         <result column="number" property="number" jdbcType="INTEGER"/>
         <result column="total" property="total" jdbcType="DECIMAL"/>
         <result column="address_id" property="addressId" jdbcType="INTEGER"/>
-        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
         <result column="pay_way" property="payWay" jdbcType="VARCHAR"/>
         <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
+    <select id="search" resultMap="orderMap">
+        select * from order_main
+        where uid=#{uid} and pid and status!=9 in (
+            select id as pid from product where name like concat('%',#{content},'%')
+            )
+    </select>
 </mapper>

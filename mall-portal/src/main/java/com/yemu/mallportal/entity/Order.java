@@ -28,7 +28,7 @@ public class Order {
     private BigDecimal total;
     @TableField("address_id")
     private int addressId;
-    private String status;
+    private int status;
     private String remarks;
     private String payWay;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

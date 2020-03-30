@@ -119,6 +119,17 @@ public class ProductController {
         return Response.ok(map);
     }
 
+    @GetMapping("/search/suggest")
+    public R<?> suggest(){
+
+        List<Map<String,String>> suggestions = new ArrayList<>();
+        for (Product product:productService.getHot(5)){
+            Map<String,String> suggestion = new HashMap<>(1);
+            suggestion.put("value",product.getName());
+            suggestions.add(suggestion);
+        }
+        return R.ok(suggestions);
+    }
     /**
      * 获取num条热销的商品
      */

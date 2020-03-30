@@ -97,12 +97,13 @@ public class OrderController {
         if (uid==0){
             return R.error("未登录");
         }
+        // 获取某个订单信息
         if (id!=null){
             return get(token,id);
         }
         try{
             QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("uid",uid);
+            queryWrapper.eq("uid",uid).ne("status",9).orderByDesc("create_time");
             List<Order> orderList = orderService.getBaseMapper().selectList(queryWrapper);
             return R.ok(orderList);
         }catch (Exception e){
@@ -139,19 +140,140 @@ public class OrderController {
 
 
     /**
+     * 搜索订单
+     */
+    @GetMapping("/search")
+    public R<?> search(@RequestHeader String token,String content){
+        int uid = TokenUtil.getUID(token);
+        if (uid==0){
+            return R.error("未登录");
+        }
+        return R.ok(orderService.search(uid,content));
+    }
+
+
+    /*********/
+    /**以下和订单状态有关的操作先写简单的进行流程验证
+     * 可以尝试采用状态机模式
+     */
+    /*********/
+
+    /**
+     * 付款（模拟）
+     */
+    @PutMapping("/{id}/pay")
+    public R<?> pay(@RequestHeader String token,@PathVariable("id") int id){
+        int uid = TokenUtil.getUID(token);
+        if (uid==0){
+            return R.error("未登录");
+        }
+        Order order = orderService.getById(id);
+        order.setStatus(1);
+        orderService.getBaseMapper().updateById(order);
+        return R.ok("支付成功");
+    }
+    /**
+     * 确认收货
+     */
+    @PutMapping("/{id}/confirmReceipt")
+    public R<?> confirmReceipt(@RequestHeader String token,@PathVariable("id") int id){
+        int uid = TokenUtil.getUID(token);
+        if (uid==0){
+            return R.error("未登录");
+        }
+        Order order = orderService.getById(id);
+        order.setStatus(3);
+        orderService.getBaseMapper().updateById(order);
+        return R.ok("收货成功");
+    }
+
+    /**
+     * 申请换货
+     */
+    @PutMapping("/{id}/applyExchange")
+    public R<?> applyExchange(@RequestHeader String token,@PathVariable("id") int id){
+        int uid = TokenUtil.getUID(token);
+        if (uid==0){
+            return R.error("未登录");
+        }
+        Order order = orderService.getById(id);
+        order.setStatus(7);
+        orderService.getBaseMapper().updateById(order);
+        return R.ok("申请成功");
+    }
+
+    /**
+     * 取消申请换货
+     */
+    @PutMapping("{id}/cancelApplyExchange")
+    public R<?> cancelApplyExchange(@RequestHeader String token,@PathVariable("id") int id){
+        int uid = TokenUtil.getUID(token);
+        if (uid==0){
+            return R.error("未登录");
+        }
+        Order order = orderService.getById(id);
+        order.setStatus(2);
+        orderService.getBaseMapper().updateById(order);
+        return R.ok("取消成功");
+    }
+    /**
+     * 申请退款
+     */
+    @PutMapping("/{id}/applyRefund")
+    public R<?> applyRefund(@RequestHeader String token,@PathVariable("id") int id){
+        int uid = TokenUtil.getUID(token);
+        if (uid==0){
+            return R.error("未登录");
+        }
+        Order order = orderService.getById(id);
+        order.setStatus(6);
+        orderService.getBaseMapper().updateById(order);
+        return R.ok("申请成功");
+    }
+
+    /**
+     * 取消申请退款
+     */
+    @PutMapping("{id}/cancelApplyRefund")
+    public R<?> cancelApplyRefund(@RequestHeader String token,@PathVariable("id") int id){
+        int uid = TokenUtil.getUID(token);
+        if (uid==0){
+            return R.error("未登录");
+        }
+        Order order = orderService.getById(id);
+        order.setStatus(2);
+        orderService.getBaseMapper().updateById(order);
+        return R.ok("取消成功");
+    }
+    /**
      * 取消订单
      */
-
+    @PutMapping("/{id}/cancel")
+    public R<?> cancel(@RequestHeader String token,@PathVariable("id") int id){
+        int uid = TokenUtil.getUID(token);
+        if (uid==0){
+            return R.error("未登录");
+        }
+        Order order = orderService.getById(id);
+        order.setStatus(8);
+        orderService.getBaseMapper().updateById(order);
+        return R.ok("取消成功");
+    }
     /**
-     * 删除订单
+     * 删除订单（改变订单状态）
      */
+    @DeleteMapping("/{id}")
+    public R<?> deleteOrder(@RequestHeader String token,@PathVariable("id") int id){
+        int uid = TokenUtil.getUID(token);
+        if (uid==0){
+            return R.error("未登录");
+        }
+        Order order = orderService.getById(id);
+        order.setStatus(9);
+        orderService.getBaseMapper().updateById(order);
+        return R.ok("删除成功");
+    }
 
-    /**
-     * 付款
-     */
-
-    /**
-     * 收货
-     */
+/********状态更新代码结束**********/
 
 }

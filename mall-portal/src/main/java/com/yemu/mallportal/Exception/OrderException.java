@@ -13,9 +13,9 @@ public class OrderException extends RuntimeException {
     public OrderException(String message){
         super(message);
     }
-    public OrderException(int staus,String message){
+    public OrderException(int status,String message){
         super(message);
-        this.status=staus;
+        this.status=status;
     }
 
     public int getStatus() {
