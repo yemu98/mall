@@ -7,16 +7,22 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-@Accessors(chain = true)
+/**
+ * @author yemuc
+ * @date 2020/3/31
+ */
 @Data
-//@TableName("cart")
-public class CartItem {
+@Accessors(chain = true)
+public class Review {
     @JsonFormat
     @TableId(value = "id",type = IdType.AUTO)
     private int id;
     private int uid;
     private int pid;
-    private Integer num=1;
+    private int grade=5;
+    private String content;
+    @TableField("order_number")
+    private String orderNumber;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField("create_time")
     private String createTime;

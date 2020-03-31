@@ -17,8 +17,11 @@
     </resultMap>
     <select id="search" resultMap="orderMap">
         select * from order_main
-        where uid=#{uid} and pid and status!=9 in (
+        where uid=#{uid} and status!=9 and pid  in (
             select id as pid from product where name like concat('%',#{content},'%')
             )
+    </select>
+    <select id="getByOrderNumber" resultMap="orderMap">
+        select * from order_main where order_number = #{orderNumber} limit 1
     </select>
 </mapper>

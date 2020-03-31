@@ -76,6 +76,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return baseMapper.search(uid,content);
     }
 
+    @Override
+    public Order getByOrderNumber(String orderNumber) {
+        return baseMapper.getByOrderNumber(orderNumber);
+    }
+
     /***
      * 生成订单
      * @param cartItem 购物车项

@@ -7,7 +7,9 @@ import com.yemu.mallportal.common.Response;
 import com.yemu.mallportal.common.TokenUtil;
 import com.yemu.mallportal.entity.Img;
 import com.yemu.mallportal.entity.Product;
+import com.yemu.mallportal.entity.Review;
 import com.yemu.mallportal.service.ImgService;
+import com.yemu.mallportal.service.ReviewService;
 import com.yemu.mallportal.service.impl.ProductServiceImpl;
 import com.yemu.mallportal.service.ProductService;
 import org.springframework.boot.context.properties.bind.DefaultValue;
@@ -28,10 +30,14 @@ import java.util.Map;
 public class ProductController {
     private final ProductService productService;
     private final ImgService imgService;
+    private final ReviewService reviewService;
 
-    public ProductController(ProductServiceImpl productService, ImgService imgService) {
+    public ProductController(ProductServiceImpl productService,
+                             ImgService imgService,
+                             ReviewService reviewService) {
         this.productService = productService;
         this.imgService = imgService;
+        this.reviewService = reviewService;
     }
 
     /**
@@ -119,6 +125,10 @@ public class ProductController {
         return Response.ok(map);
     }
 
+    /**
+     * 获取搜索建议 从热销中获取
+     * @return 建议
+     */
     @GetMapping("/search/suggest")
     public R<?> suggest(){
 
@@ -163,5 +173,14 @@ public class ProductController {
     public R<?> getStock(@PathVariable("id") int id){
         int stock = productService.getById(id).getStock();
         return R.ok(stock);
+    }
+
+    @GetMapping("/{id}/review")
+    public R<?> getReview(@PathVariable("id") int id,
+                          @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize,
+                          @RequestParam(value = "pageNo",required = false,defaultValue = "1") int pageNo){
+        Page<Review> iPage = new Page<>(pageNo,pageSize);
+        List<Review> reviews = reviewService.getByPid(id,iPage);
+        return R.ok(reviews);
     }
 }

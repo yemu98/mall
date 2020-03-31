@@ -161,13 +161,13 @@ public class OrderController {
     /**
      * 付款（模拟）
      */
-    @PutMapping("/{id}/pay")
-    public R<?> pay(@RequestHeader String token,@PathVariable("id") int id){
+    @PutMapping("/{orderNumber}/pay")
+    public R<?> pay(@RequestHeader String token,@PathVariable("orderNumber") String orderNumber){
         int uid = TokenUtil.getUID(token);
         if (uid==0){
             return R.error("未登录");
         }
-        Order order = orderService.getById(id);
+        Order order = orderService.getByOrderNumber(orderNumber);
         order.setStatus(1);
         orderService.getBaseMapper().updateById(order);
         return R.ok("支付成功");
@@ -175,13 +175,13 @@ public class OrderController {
     /**
      * 确认收货
      */
-    @PutMapping("/{id}/confirmReceipt")
-    public R<?> confirmReceipt(@RequestHeader String token,@PathVariable("id") int id){
+    @PutMapping("/{orderNumber}/confirmReceipt")
+    public R<?> confirmReceipt(@RequestHeader String token,@PathVariable("orderNumber") String orderNumber){
         int uid = TokenUtil.getUID(token);
         if (uid==0){
             return R.error("未登录");
         }
-        Order order = orderService.getById(id);
+        Order order = orderService.getByOrderNumber(orderNumber);
         order.setStatus(3);
         orderService.getBaseMapper().updateById(order);
         return R.ok("收货成功");
@@ -190,13 +190,13 @@ public class OrderController {
     /**
      * 申请换货
      */
-    @PutMapping("/{id}/applyExchange")
-    public R<?> applyExchange(@RequestHeader String token,@PathVariable("id") int id){
+    @PutMapping("/{orderNumber}/applyExchange")
+    public R<?> applyExchange(@RequestHeader String token,@PathVariable("orderNumber") String orderNumber){
         int uid = TokenUtil.getUID(token);
         if (uid==0){
             return R.error("未登录");
         }
-        Order order = orderService.getById(id);
+        Order order = orderService.getByOrderNumber(orderNumber);
         order.setStatus(7);
         orderService.getBaseMapper().updateById(order);
         return R.ok("申请成功");
@@ -205,13 +205,14 @@ public class OrderController {
     /**
      * 取消申请换货
      */
-    @PutMapping("{id}/cancelApplyExchange")
-    public R<?> cancelApplyExchange(@RequestHeader String token,@PathVariable("id") int id){
+    @PutMapping("{orderNumber}/cancelApplyExchange")
+    public R<?> cancelApplyExchange(@RequestHeader String token,@PathVariable("orderNumber") String orderNumber){
         int uid = TokenUtil.getUID(token);
         if (uid==0){
             return R.error("未登录");
         }
-        Order order = orderService.getById(id);
+
+        Order order = orderService.getByOrderNumber(orderNumber);
         order.setStatus(2);
         orderService.getBaseMapper().updateById(order);
         return R.ok("取消成功");
@@ -219,13 +220,13 @@ public class OrderController {
     /**
      * 申请退款
      */
-    @PutMapping("/{id}/applyRefund")
-    public R<?> applyRefund(@RequestHeader String token,@PathVariable("id") int id){
+    @PutMapping("/{orderNumber}/applyRefund")
+    public R<?> applyRefund(@RequestHeader String token,@PathVariable("orderNumber") String orderNumber){
         int uid = TokenUtil.getUID(token);
         if (uid==0){
             return R.error("未登录");
         }
-        Order order = orderService.getById(id);
+        Order order = orderService.getByOrderNumber(orderNumber);
         order.setStatus(6);
         orderService.getBaseMapper().updateById(order);
         return R.ok("申请成功");
@@ -234,13 +235,13 @@ public class OrderController {
     /**
      * 取消申请退款
      */
-    @PutMapping("{id}/cancelApplyRefund")
-    public R<?> cancelApplyRefund(@RequestHeader String token,@PathVariable("id") int id){
+    @PutMapping("{orderNumber}/cancelApplyRefund")
+    public R<?> cancelApplyRefund(@RequestHeader String token,@PathVariable("orderNumber") String orderNumber){
         int uid = TokenUtil.getUID(token);
         if (uid==0){
             return R.error("未登录");
         }
-        Order order = orderService.getById(id);
+        Order order = orderService.getByOrderNumber(orderNumber);
         order.setStatus(2);
         orderService.getBaseMapper().updateById(order);
         return R.ok("取消成功");
@@ -248,13 +249,13 @@ public class OrderController {
     /**
      * 取消订单
      */
-    @PutMapping("/{id}/cancel")
-    public R<?> cancel(@RequestHeader String token,@PathVariable("id") int id){
+    @PutMapping("/{orderNumber}/cancel")
+    public R<?> cancel(@RequestHeader String token,@PathVariable("orderNumber") String orderNumber){
         int uid = TokenUtil.getUID(token);
         if (uid==0){
             return R.error("未登录");
         }
-        Order order = orderService.getById(id);
+        Order order = orderService.getByOrderNumber(orderNumber);
         order.setStatus(8);
         orderService.getBaseMapper().updateById(order);
         return R.ok("取消成功");
@@ -262,13 +263,13 @@ public class OrderController {
     /**
      * 删除订单（改变订单状态）
      */
-    @DeleteMapping("/{id}")
-    public R<?> deleteOrder(@RequestHeader String token,@PathVariable("id") int id){
+    @DeleteMapping("/{orderNumber}")
+    public R<?> deleteOrder(@RequestHeader String token,@PathVariable("orderNumber") String orderNumber){
         int uid = TokenUtil.getUID(token);
         if (uid==0){
             return R.error("未登录");
         }
-        Order order = orderService.getById(id);
+        Order order = orderService.getByOrderNumber(orderNumber);
         order.setStatus(9);
         orderService.getBaseMapper().updateById(order);
         return R.ok("删除成功");
