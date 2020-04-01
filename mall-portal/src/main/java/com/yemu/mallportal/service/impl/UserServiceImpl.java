@@ -38,4 +38,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return Response.ok("注册成功！",baseMapper.insert(user));
         }
     }
+
+    @Override
+    public String getNameByUid(int uid) {
+        return baseMapper.selectById(uid).getName();
+    }
 }

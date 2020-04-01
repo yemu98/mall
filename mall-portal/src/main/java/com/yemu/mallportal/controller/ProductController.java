@@ -8,10 +8,13 @@ import com.yemu.mallportal.common.TokenUtil;
 import com.yemu.mallportal.entity.Img;
 import com.yemu.mallportal.entity.Product;
 import com.yemu.mallportal.entity.Review;
+import com.yemu.mallportal.model.ReviewModel;
 import com.yemu.mallportal.service.ImgService;
 import com.yemu.mallportal.service.ReviewService;
+import com.yemu.mallportal.service.UserService;
 import com.yemu.mallportal.service.impl.ProductServiceImpl;
 import com.yemu.mallportal.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,13 +34,15 @@ public class ProductController {
     private final ProductService productService;
     private final ImgService imgService;
     private final ReviewService reviewService;
+    private final UserService userService;
 
     public ProductController(ProductServiceImpl productService,
                              ImgService imgService,
-                             ReviewService reviewService) {
+                             ReviewService reviewService, UserService userService) {
         this.productService = productService;
         this.imgService = imgService;
         this.reviewService = reviewService;
+        this.userService = userService;
     }
 
     /**
@@ -175,12 +180,23 @@ public class ProductController {
         return R.ok(stock);
     }
 
+    /**
+     * 获取商品评价
+     * @param id 产品id
+     * @param pageSize 页面大小
+     * @param pageNo 页码
+     * @return 评价
+     */
     @GetMapping("/{id}/review")
     public R<?> getReview(@PathVariable("id") int id,
                           @RequestParam(value = "pageSize",required = false,defaultValue = "10") int pageSize,
                           @RequestParam(value = "pageNo",required = false,defaultValue = "1") int pageNo){
         Page<Review> iPage = new Page<>(pageNo,pageSize);
         List<Review> reviews = reviewService.getByPid(id,iPage);
-        return R.ok(reviews);
+        List<ReviewModel> reviewModels = new ArrayList<>();
+        for (Review review: reviews){
+            reviewModels.add(new ReviewModel(review).setName(userService.getNameByUid(review.getUid())));
+        }
+        return R.ok(reviewModels);
     }
 }

@@ -9,4 +9,5 @@ public interface UserService extends IService<User> {
     User findUserByPhone(String phone);
     boolean existUserByPhone(String phone);
     Response<User> register(User user);
+    String getNameByUid(int uid);
 }
