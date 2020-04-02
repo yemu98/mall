@@ -40,7 +40,7 @@ spring:
           # 忽略过滤格式
         exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
 mybatis:
-  type-aliases-package: com.yemu.mall.entity
+  type-aliases-package: com.yemu.mallportal.entity
   mapper-locations: classpath:com/yemu/mallportal/mapper/**/*.xml
 mybatis-plus:
   mapper-locations: classpath:com/yemu/mallportal/mapper/**/*.xml

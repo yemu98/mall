@@ -1,4 +1,4 @@
-package com.yemu.mallportal;
+package com.yemu.mallportal.config;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.springframework.context.annotation.Bean;

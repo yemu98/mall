@@ -1,8 +1,8 @@
 package com.yemu.mallportal.controller;
 
 import com.yemu.mallportal.Exception.ReviewException;
-import com.yemu.mallportal.common.R;
-import com.yemu.mallportal.common.TokenUtil;
+import com.yemu.mall.common.R;
+import com.yemu.mall.common.TokenUtil;
 import com.yemu.mallportal.entity.Review;
 import com.yemu.mallportal.service.ReviewService;
 import org.springframework.validation.annotation.Validated;

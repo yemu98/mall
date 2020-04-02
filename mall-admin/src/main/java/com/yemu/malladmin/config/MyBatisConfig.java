@@ -1,4 +1,4 @@
-package com.yemu.malladmin;
+package com.yemu.malladmin.config;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Configuration;

@@ -60,6 +60,8 @@ public class ProductMGTController {
     /**
      * 查询商品信息
      */
+
+
     static class ProductWithImg {
         private Product product;
         private List<Img> imgList;

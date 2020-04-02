@@ -2,9 +2,9 @@ package com.yemu.mallportal.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yemu.mallportal.common.R;
-import com.yemu.mallportal.common.Response;
-import com.yemu.mallportal.common.TokenUtil;
+import com.yemu.mall.common.R;
+import com.yemu.mall.common.Response;
+import com.yemu.mall.common.TokenUtil;
 import com.yemu.mallportal.entity.Img;
 import com.yemu.mallportal.entity.Product;
 import com.yemu.mallportal.entity.Review;
@@ -14,8 +14,6 @@ import com.yemu.mallportal.service.ReviewService;
 import com.yemu.mallportal.service.UserService;
 import com.yemu.mallportal.service.impl.ProductServiceImpl;
 import com.yemu.mallportal.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

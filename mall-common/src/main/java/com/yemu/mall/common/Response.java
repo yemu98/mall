@@ -1,4 +1,4 @@
-package com.yemu.mallportal.common;
+package com.yemu.mall.common;
 
 import java.util.HashMap;
 import java.util.Map;

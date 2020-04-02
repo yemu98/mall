@@ -18,7 +18,10 @@
 
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.yemu.mall</groupId>
+            <artifactId>mall-common</artifactId>
+        </dependency>
 <!--        七牛云sdk-->
         <dependency>
             <groupId>com.qiniu</groupId>

@@ -1,4 +1,4 @@
-package com.yemu.mallportal.common;
+package com.yemu.mall.common;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

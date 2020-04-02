@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.yemu.mallportal.DecimalSerialize;
+import com.yemu.mall.common.DecimalSerialize;
 import lombok.Data;
 
 import java.math.BigDecimal;

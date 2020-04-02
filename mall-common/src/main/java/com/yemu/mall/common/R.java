@@ -1,4 +1,4 @@
-package com.yemu.mallportal.common;
+package com.yemu.mall.common;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package com.yemu.mallportal.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yemu.mallportal.common.Response;
+import com.yemu.mall.common.Response;
 import com.yemu.mallportal.entity.User;
 
 public interface UserService extends IService<User> {

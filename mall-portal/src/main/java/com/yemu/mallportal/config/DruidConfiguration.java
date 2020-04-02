@@ -1,4 +1,4 @@
-package com.yemu.mallportal;
+package com.yemu.mallportal.config;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;

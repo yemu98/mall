@@ -1,4 +1,4 @@
-package com.yemu.mallportal;
+package com.yemu.mallportal.config;
 
 import org.springframework.context.annotation.Configuration;
 

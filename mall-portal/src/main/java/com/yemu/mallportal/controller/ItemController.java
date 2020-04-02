@@ -3,7 +3,7 @@ package com.yemu.mallportal.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yemu.mallportal.common.R;
+import com.yemu.mall.common.R;
 import com.yemu.mallportal.entity.Img;
 import com.yemu.mallportal.entity.Product;
 import com.yemu.mallportal.model.Item;

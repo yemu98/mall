@@ -1,8 +1,8 @@
 package com.yemu.mallportal.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.yemu.mallportal.common.R;
-import com.yemu.mallportal.common.TokenUtil;
+import com.yemu.mall.common.R;
+import com.yemu.mall.common.TokenUtil;
 import com.yemu.mallportal.entity.Address;
 import com.yemu.mallportal.service.AddressService;
 import org.springframework.validation.annotation.Validated;

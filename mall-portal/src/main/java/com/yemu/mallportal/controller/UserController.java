@@ -1,6 +1,6 @@
 package com.yemu.mallportal.controller;
 
-import com.yemu.mallportal.common.Response;
+import com.yemu.mall.common.Response;
 import com.yemu.mallportal.service.UserService;
 import com.yemu.mallportal.entity.User;
 import org.springframework.validation.annotation.Validated;

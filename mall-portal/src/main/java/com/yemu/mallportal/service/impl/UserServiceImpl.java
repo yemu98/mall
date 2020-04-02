@@ -1,7 +1,7 @@
 package com.yemu.mallportal.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yemu.mallportal.common.Response;
+import com.yemu.mall.common.Response;
 import com.yemu.mallportal.entity.User;
 import com.yemu.mallportal.mapper.UserMapper;
 import com.yemu.mallportal.service.UserService;
