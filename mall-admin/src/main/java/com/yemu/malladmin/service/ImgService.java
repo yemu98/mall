@@ -6,5 +6,5 @@ import com.yemu.malladmin.entity.Img;
 import java.util.List;
 
 public interface ImgService extends IService<Img> {
-    List<Img> getById(int pid);
+    List<Img> getByPid(int pid);
 }

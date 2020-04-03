@@ -74,10 +74,30 @@ public class OrderController {
     /**
      * 同意退款
      */
+    @PatchMapping("{orderNumber}/refund")
+    public R<?> refund(@PathVariable("orderNumber") String orderNumber){
+        Order order = orderService.getByOrderNumber(orderNumber);
+        if (null==order){
+            return R.error(404,"没有找到此订单");
+        }
+        order.setStatus(OrderStatus.交易关闭.getStatusCode());
+        orderService.getBaseMapper().updateById(order);
+        return R.ok("退款成功",order);
+    }
 
     /**
      * 同意换货
      */
+    @PatchMapping("{orderNumber}/exchange")
+    public R<?> exchange(@PathVariable("orderNumber") String orderNumber){
+        Order order = orderService.getByOrderNumber(orderNumber);
+        if (null==order){
+            return R.error(404,"没有找到此订单");
+        }
+        order.setStatus(OrderStatus.待收货.getStatusCode());
+        orderService.getBaseMapper().updateById(order);
+        return R.ok("已重新发货",order);
+    }
 
     /**
      * 恢复订单
