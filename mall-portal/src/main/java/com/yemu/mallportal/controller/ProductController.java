@@ -148,14 +148,15 @@ public class ProductController {
      */
     @GetMapping("/hot")
     public R<?> getHot(@RequestParam(value = "num",required = false,defaultValue = "10") Integer num){
-        return R.ok(productService.getHot(num));
+
+        return R.ok(getProductListWithImgList(productService.getHot(num)));
     }
     @GetMapping(value = {"/hot/{num}"})
     public R<?> getHot2(@PathVariable(required = false) Integer num){
         if (num==null){
             num=10;
         }
-        return R.ok(productService.getHot(num));
+        return R.ok(getProductListWithImgList(productService.getHot(num)));
     }
 
     /**

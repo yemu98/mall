@@ -1,7 +1,6 @@
 package com.yemu.mallportal.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import com.yemu.mallportal.entity.Address;
 import com.yemu.mallportal.entity.CartItem;
 import com.yemu.mallportal.entity.Order;

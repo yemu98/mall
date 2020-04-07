@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yemu.mall.common.Response;
 import com.yemu.mall.common.ResponseCode;
 import com.yemu.mall.common.TokenUtil;
+import com.yemu.mallportal.Exception.LoginException;
 import com.yemu.mallportal.entity.User;
 import com.yemu.mallportal.mapper.UserMapper;
 import com.yemu.mallportal.service.LoginService;
@@ -35,15 +36,15 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper,User> implements Lo
     }
 
     @Override
-    public Response isLogin(String token) {
+    public boolean isLogin(String token) {
         if (null == token || token.isEmpty()){
-            return Response.error(ResponseCode.UNLOGIN.getCode(),ResponseCode.UNLOGIN.getDesc());
+            throw new LoginException(500,"token为空");
         }
-        if (TokenUtil.verifyToken(token)){
-            return Response.ok();
+        if (TokenUtil.getUID(token)!=0){
+            return true;
         }
         else{
-            return Response.error(ResponseCode.UNLOGIN.getCode(),ResponseCode.UNLOGIN.getDesc());
+            throw new LoginException(400,"token已过期");
         }
     }
 

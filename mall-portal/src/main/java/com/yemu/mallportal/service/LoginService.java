@@ -19,7 +19,7 @@ public interface LoginService {
      * @param token
      * @return
      */
-    Response<String> isLogin(String token);
+    boolean isLogin(String token);
 
     /**
      * 根据token获取用户id
