@@ -33,6 +33,11 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         return baseMapper.updateById(product);
     }
 
+    /**
+     * 上架
+     * @param pid pid
+     * @return 反馈
+     */
     @Override
     public int pullOn(int pid) {
         Product product = baseMapper.selectById(pid);
