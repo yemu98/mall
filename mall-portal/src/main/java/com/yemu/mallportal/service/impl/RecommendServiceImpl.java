@@ -14,10 +14,7 @@ import com.yemu.mallportal.util.UserLogLevelEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author yemuc
@@ -33,6 +30,9 @@ public class RecommendServiceImpl implements RecommendService {
     private UserUnlikeService userUnlikeService;
     @Autowired
     private ManualRecommendMapper manualRecommendMapper;
+
+    // 保存推荐结果 uid:productSet
+    private static final Map<Integer, Set<Product>> recommend = new HashMap<>(16);
 
     /**
      * 根据用户推荐
@@ -64,8 +64,10 @@ public class RecommendServiceImpl implements RecommendService {
             productSet.addAll(productService.random(pageSize - productSet.size()));
             // 过滤掉用户不喜欢的商品
             filterDisLike(productSet, uid);
+            // 过滤已出现过的推荐
+            filterRepeat(uid, productSet);
         }
-
+        saveRecommend(uid,productSet,pageNo);
         return new ArrayList<>(productSet);
     }
 
@@ -140,16 +142,42 @@ public class RecommendServiceImpl implements RecommendService {
      * 去除重复推荐
      */
 
-    void filterRepeat(Set<Product> productSet, int pageNo) {
+    void filterRepeat(int uid, Set<Product> productSet) {
+        // 移除已经推荐过的商品
+        if (recommend.containsKey(uid) && recommend.get(uid).size() > 0) {
+            Set<Product> productSet1 = recommend.get(uid);
+            for (Product product : productSet1) {
+                productSet.remove(product);
+            }
+        }
+    }
 
+    /**
+     * 保存推荐历史
+     * @param uid uid
+     * @param productSet 推荐结果
+     */
+    void saveRecommend(int uid,Set<Product> productSet,int pageNo){
+        // 页码数为1，清空推荐历史，重新生成推荐
+        if (pageNo <= 1) {
+            recommend.put(uid, productSet);
+            return;
+        }
+        if (recommend.containsKey(uid)) {
+            Set<Product> products = recommend.get(uid);
+            products.addAll(productSet);
+            recommend.put(uid, products);
+        } else {
+            recommend.put(uid, productSet);
+        }
     }
 
     /**
      * 未登录推荐
      *
-     * @param pageNo
-     * @param pageSize
-     * @return
+     * @param pageNo   页码
+     * @param pageSize 每页数据量
+     * @return 推荐结果
      */
     @Override
     public List<Product> commonRecommend(int pageNo, int pageSize) {
