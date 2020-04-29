@@ -14,14 +14,23 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <select id="findByUid" resultMap="product">
-         select * from product where id not in (select pid from user_unlike where uid =#{uid});
+        select *
+        from product
+        where id not in (select pid from user_unlike where uid = #{uid});
     </select>
     <select id="getHot" resultMap="product">
-        select product.*,count(pid) as sum
-        from order_main,product
-        where order_main.pid=product.id
+        select product.*, count(pid) as sum
+        from order_main,
+             product
+        where order_main.pid = product.id
         group by pid
         order by sum desc
+        limit #{num};
+    </select>
+    <select id="random" resultMap="product">
+        select *
+        from product
+        order by rand()
         limit #{num};
     </select>
 </mapper>

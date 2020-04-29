@@ -8,6 +8,7 @@ import com.yemu.mallportal.entity.CartItem;
 import com.yemu.mallportal.service.CartService;
 import com.yemu.mallportal.service.ImgService;
 import com.yemu.mallportal.service.ProductService;
+import com.yemu.mallportal.service.UserLogService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,25 +24,31 @@ public class CartController {
     private final CartService cartService;
     private final ProductService productService;
     private final ImgService imgService;
+    private final UserLogService userLogService;
 
-    public CartController(CartService cartService, ProductService productService, ImgService imgService) {
+    public CartController(CartService cartService, ProductService productService, ImgService imgService, UserLogService userLogService) {
         this.cartService = cartService;
         this.productService = productService;
         this.imgService = imgService;
+        this.userLogService = userLogService;
     }
 
     /**
      * 向购物车添加
      */
     @PostMapping("")
-    public R<?> add(@RequestHeader(required = false) String token, CartItem cartItem){
+    public R<?> add(@RequestHeader(required = false) String token, CartItem cartItem) {
         int uid = (token == null || token.isEmpty()) ? 0 : TokenUtil.getUID(token);
-        if (uid==0){
+        if (uid == 0) {
             return R.error("用户未登录！");
         }
         cartItem.setUid(uid);
-        return cartService.add(cartItem)!=null?R.ok("加入购物车成功！",cartItem):R.error("加入购物车失败!");
-
+        if (cartService.add(cartItem) != null) {
+            // 收集添加进购物车数据
+            userLogService.addCart(token, cartItem.getPid());
+           return R.ok("加入购物车成功！", cartItem);
+        }
+       return R.error("加入购物车失败!");
     }
     /**
      * 查询购物车内容

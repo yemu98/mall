@@ -9,7 +9,7 @@ import com.yemu.mallportal.entity.Product;
 import com.yemu.mallportal.model.Item;
 import com.yemu.mallportal.service.ImgService;
 import com.yemu.mallportal.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.yemu.mallportal.service.UserLogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,15 +18,22 @@ import java.util.List;
 
 /**
  * 商品详情
+ * 此接口面向商品详情点击
  */
 @RestController
 @Validated
 @RequestMapping("/item")
 public class ItemController {
-    @Autowired
-   private ProductService productService;
-    @Autowired
-    private  ImgService imgService;
+    private final ProductService productService;
+    private final ImgService imgService;
+    private final UserLogService userLogService;
+
+    public ItemController(ProductService productService, ImgService imgService,UserLogService userLogService) {
+        this.productService = productService;
+        this.imgService = imgService;
+        this.userLogService = userLogService;
+    }
+
     /**
      *获取商品
      */
@@ -43,19 +50,19 @@ public class ItemController {
     }
     /**
      * 获取商品详细信息
-     *
-     * @param id
+     * @param id pid
      */
     @GetMapping(value = "/{id}")
-    public R get(@PathVariable("id") Integer id) {
+    public R<?> get(@PathVariable("id") Integer id,@RequestHeader(required = false)String token) {
         Product product = productService.getById(id);
         if (product!=null){
             List<Img> imgList = imgService.getMain(product.getId());
             Item item = new Item();
             item.setProduct(product);
             item.setImgList(imgList);
-            List<Img> deatilImgList = imgService.getDetail(product.getId());
-            item.setDetailImgList(deatilImgList);
+            List<Img> detailImagList = imgService.getDetail(product.getId());
+            item.setDetailImgList(detailImagList);
+            userLogService.click(token,item.getProduct().getId());
             return R.ok(item);
         }
         else{

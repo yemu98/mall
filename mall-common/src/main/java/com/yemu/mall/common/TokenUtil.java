@@ -83,15 +83,20 @@ public class TokenUtil {
      */
     public static boolean verifyToken(String token){
         try {
-
+            if (null==token||token.isEmpty()){
+                return false;
+            }
             Date nowTime = new Date();
             Date expTime = JWT.decode(token).getExpiresAt();
-            //已过期
-            return !nowTime.after(expTime);
+            // 验证是否过期
+            if (nowTime.after(expTime)){
+                return false;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+        return true;
     }
 
     public static int getUID(String token) {
@@ -111,7 +116,7 @@ public class TokenUtil {
             if (null == uidClaim || StringUtils.isEmpty(uidClaim.asString())) {
                 return 0;
             }
-            return Integer.valueOf(uidClaim.asString());
+            return Integer.parseInt(uidClaim.asString());
         } catch (Exception e) {
             e.printStackTrace();
             return 0;

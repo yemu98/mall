@@ -1,40 +1,44 @@
 package com.yemu.mallportal.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.yemu.mall.common.R;
 import com.yemu.mall.common.Response;
+import com.yemu.mall.common.TokenUtil;
 import com.yemu.mallportal.entity.UserUnlike;
 import com.yemu.mallportal.service.UserUnlikeService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user/unlike")
+@RequestMapping("/unlike")
 public class UserUnlikeController {
-    @Autowired
-    private UserUnlikeService userUnlikeService;
+    private final UserUnlikeService userUnlikeService;
 
-    @PostMapping("/add")
-    public Response<?> addUnlike(@Valid UserUnlike userUnlike){
-        try{
+    public UserUnlikeController(UserUnlikeService userUnlikeService) {
+        this.userUnlikeService = userUnlikeService;
+    }
 
-            userUnlikeService.getBaseMapper().insert(userUnlike);
-            return Response.ok(userUnlike);
+    @PostMapping("/{pid}")
+    public R<?> unlike(@PathVariable(value = "pid") int pid, @RequestHeader(required = false) String token) {
+        try {
+            int uid = TokenUtil.getUID(token);
+            if (uid != 0) {
+                UserUnlike userUnlike = new UserUnlike();
+                userUnlike.setUid(uid);
+                userUnlike.setPid(pid);
+                userUnlikeService.getBaseMapper().insert(userUnlike);
+            }
+            return R.ok("ok");
         }
         catch (Exception e){
             e.printStackTrace();
-            return Response.error(e.getMessage());
+            return R.error();
         }
     }
 
     @DeleteMapping("/delete")
     public Response<?> deleteUnlike(int pid){
         try{
-            QueryWrapper wrapper = new QueryWrapper();
+            QueryWrapper<UserUnlike> wrapper = new QueryWrapper<>();
             wrapper.eq("pid",pid);
             userUnlikeService.getBaseMapper().delete(wrapper);
             return Response.ok();

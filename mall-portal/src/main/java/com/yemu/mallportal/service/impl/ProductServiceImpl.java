@@ -42,10 +42,15 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     @Override
     public List<Product> getHot(int num) {
-        if (num==0){
-            num=10;
+        if (num == 0) {
+            num = 10;
         }
         return getBaseMapper().getHot(num);
+    }
+
+    @Override
+    public List<Product> random(int num) {
+        return baseMapper.random(num);
     }
 
 }

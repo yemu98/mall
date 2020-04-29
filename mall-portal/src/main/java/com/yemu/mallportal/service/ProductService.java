@@ -9,4 +9,5 @@ public interface ProductService extends IService<Product> {
     List<Product> getByUser(int uid,int pageNo,int pageSize);
     List<Product> search(Product product);
     List<Product> getHot(int num);
+    List<Product> random(int num);
 }
