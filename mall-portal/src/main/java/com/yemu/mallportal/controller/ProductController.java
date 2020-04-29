@@ -7,7 +7,6 @@ import com.yemu.mall.common.Response;
 import com.yemu.mall.common.TokenUtil;
 import com.yemu.mallportal.entity.Product;
 import com.yemu.mallportal.entity.Review;
-import com.yemu.mallportal.entity.UserLog;
 import com.yemu.mallportal.model.ReviewModel;
 import com.yemu.mallportal.service.*;
 import com.yemu.mallportal.service.impl.ProductServiceImpl;
@@ -93,7 +92,7 @@ public class ProductController {
      * @return 搜索结果
      */
     @GetMapping("/search")
-    public Response<?> search(String searchContent) {
+    public Response<?> search(String searchContent, @RequestHeader(required = false) String token) {
         Product product = new Product();
         product.setName(searchContent);
         product.setBrand(searchContent);
@@ -101,6 +100,8 @@ public class ProductController {
         List<Product> productList = productService.search(product);
         Map<String, Object> map = new HashMap<>(16);
         map.put("productList", ProductUtil.getProductListWithImgList(productList));
+// 数据收集，此处应该是异步操作
+        userLogService.search(token, productList);
         return Response.ok(map);
     }
 
