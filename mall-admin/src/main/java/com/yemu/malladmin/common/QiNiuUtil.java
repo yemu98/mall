@@ -39,18 +39,18 @@ public class QiNiuUtil {
         UploadManager uploadManager = new UploadManager(cfg);
         try{
             String token = getUpToken();
-            //检查是否获取到token
+            //检查是否获取到七牛云token
             if (token.isEmpty()){
                 return null;
             }
+            // 获取UUID
             String name=getUUID()+suffix;
             Response res = uploadManager.put(file,name,token,null,null);
+            // 返回存储地址
             if (res.isOK()){
                 Img img = res.jsonToObject(Img.class);
                 return DOMAIN+"/"+img.key;
             }
-
-
         }
         catch (QiniuException e){
             e.printStackTrace();

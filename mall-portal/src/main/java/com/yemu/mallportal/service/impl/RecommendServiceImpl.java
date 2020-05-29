@@ -2,9 +2,11 @@ package com.yemu.mallportal.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yemu.mallportal.entity.ItemSimilarity;
 import com.yemu.mallportal.entity.ManualRecommend;
 import com.yemu.mallportal.entity.Product;
 import com.yemu.mallportal.entity.UserLog;
+import com.yemu.mallportal.mapper.ItemSimilarityMapper;
 import com.yemu.mallportal.mapper.ManualRecommendMapper;
 import com.yemu.mallportal.service.ProductService;
 import com.yemu.mallportal.service.RecommendService;
@@ -30,6 +32,8 @@ public class RecommendServiceImpl implements RecommendService {
     private UserUnlikeService userUnlikeService;
     @Autowired
     private ManualRecommendMapper manualRecommendMapper;
+    @Autowired
+    private ItemSimilarityMapper itemSimilarityMapper;
 
     // 保存推荐结果 uid:productSet
     private static final Map<Integer, Set<Product>> recommend = new HashMap<>(16);
@@ -76,7 +80,11 @@ public class RecommendServiceImpl implements RecommendService {
      */
     List<Product> byItemCf(int pid, int num) {
         List<Product> productList = new ArrayList<>();
-
+        QueryWrapper<ItemSimilarity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("pid1", pid).orderByDesc("similarity").last("limit " + num);
+        for (ItemSimilarity itemSimilarity : itemSimilarityMapper.selectList(queryWrapper)) {
+            productList.add(productService.getById(itemSimilarity.getPid2()));
+        }
         return productList;
     }
 

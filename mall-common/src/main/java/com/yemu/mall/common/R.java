@@ -56,7 +56,6 @@ public class R<T> extends ResponseEntity<T> {
         int status;
         String message;
         T data;
-
         PayLoad(int status,String message,T data){
             this.status = status;
             this.message = message;

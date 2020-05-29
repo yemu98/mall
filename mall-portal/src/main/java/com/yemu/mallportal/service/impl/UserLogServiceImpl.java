@@ -32,7 +32,6 @@ public class UserLogServiceImpl extends ServiceImpl<UserLogMapper, UserLog> impl
     @Async
     public Future<Boolean> click(String token, int pid) {
         try {
-
             UserLog userLog = createUserLog(token,pid);
             if (null!=userLog) {
                 userLog.setType("click");
@@ -44,8 +43,6 @@ public class UserLogServiceImpl extends ServiceImpl<UserLogMapper, UserLog> impl
         }catch (Exception e){
             e.printStackTrace();
         }
-
-
         return null;
     }
 
