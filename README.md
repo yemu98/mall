@@ -1,9 +1,14 @@
 # mall
-具有个性化推荐功能的商城  
-当前用到的技术或工具  
-springboot，mybatis，mybatis-plus，Lombok，java-jwt，vue，element-ui
-mall-portal：前台后端  
-mall-web：前台前端  
-mall-admin：后台后端  
-mall-admin-web：后台前端  
+练手用的SpringBoot商城项目  
+后端使用SpringBoot,mybatis  
+前端使用Vue+elementui  
+数据库使用了MySQL  
+项目结构  
+mall-common: 通用组件  
+mall-portal：前台商城接口  
+mall-web：商城前台前端  
+mall-admin：管理接口后端  
+mall-admin-web：商城管理前端  
 数据库 MySQL  
+项目组织结构参考了[macrozheng的mall项目](https://github.com/macrozheng/mall)
+
