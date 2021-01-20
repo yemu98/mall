@@ -2,7 +2,6 @@ package com.yemu.mallportal.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yemu.mall.common.Response;
-import com.yemu.mall.common.ResponseCode;
 import com.yemu.mall.common.TokenUtil;
 import com.yemu.mallportal.Exception.LoginException;
 import com.yemu.mallportal.entity.User;
@@ -17,7 +16,7 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper,User> implements Lo
     @Resource
     private UserMapper userMapper;
     @Override
-    public Response login(User user) {
+    public Response<?> login(User user) {
         User user1=userMapper.getUserByPhone(user.getPhone());
         if (user1!=null){
             if (user1.getPwd().equals(user.getPwd())){

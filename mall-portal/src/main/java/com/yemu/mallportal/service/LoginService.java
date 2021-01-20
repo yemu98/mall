@@ -9,22 +9,22 @@ import com.yemu.mallportal.entity.User;
 public interface LoginService {
     /**
      * 登录
-     * @param user
+     * @param user 用户信息
      * @return 登录用户信息
      */
-    Response<User> login(User user);
+    Response<?> login(User user);
 
     /**
      * 是否已登录
-     * @param token
-     * @return
+     * @param token token
+     * @return true/false
      */
     boolean isLogin(String token);
 
     /**
      * 根据token获取用户id
-     * @param token
-     * @return
+     * @param token token
+     * @return 用户id
      */
     long getId(String token);
 }
