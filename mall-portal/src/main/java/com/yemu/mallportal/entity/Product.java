@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 public class Product {
     @JsonFormat
     @TableId(value = "id",type = IdType.AUTO)
-    private int id;
+    private Integer id;
     private String info;
     private String name;
     private String brand;

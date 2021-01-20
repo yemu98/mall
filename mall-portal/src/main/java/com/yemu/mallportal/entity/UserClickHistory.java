@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class UserClickHistory {
     @JsonFormat
     @TableId(value = "id",type = IdType.AUTO)
-    private int id;
+    private Integer id;
     private int uid;
     @NotNull(message = "pid 不能为空")
     private int pid;

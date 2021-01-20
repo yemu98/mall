@@ -9,7 +9,7 @@ import lombok.Data;
 public class Img {
     @JsonFormat
     @TableId(value = "id",type = IdType.AUTO)
-    private int id;
+    private Integer id;
     private int pid;
     private String url;
     private String name;

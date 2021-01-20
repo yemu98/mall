@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 public class User {
     @JsonFormat
     @TableId(value = "id")
-    private int id;
+    private Integer id;
     private String name;
     @NotBlank(message = "手机号不能为空")
     private String phone;

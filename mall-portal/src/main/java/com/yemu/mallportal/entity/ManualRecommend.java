@@ -13,7 +13,7 @@ import lombok.Data;
 @TableName("manual_recommend")
 public class ManualRecommend {
     @TableId(value = "id",type = IdType.AUTO)
-    private int id;
+    private Integer id;
     private int pid;
     private int level;
 }

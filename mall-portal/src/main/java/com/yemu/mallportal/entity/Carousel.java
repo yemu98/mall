@@ -17,7 +17,7 @@ import lombok.Data;
 public class Carousel {
     @JsonFormat
     @TableId(value = "id",type = IdType.AUTO)
-    private int id;
+    private Integer id;
     private String link;
     private String imgUrl;
     private String info;

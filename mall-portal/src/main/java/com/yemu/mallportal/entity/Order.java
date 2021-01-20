@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 public class Order {
     @JsonFormat
     @TableId(value = "id",type = IdType.AUTO)
-    private int id;
+    private Integer id;
     @TableField("order_number")
     private String orderNumber;
     private int uid;

@@ -13,7 +13,7 @@ import lombok.Data;
 @TableName("user_log")
 public class UserLog {
     @TableId(value = "id",type = IdType.AUTO)
-    private int id;
+    private Integer id;
     private int uid;
     private int pid;
     private String type;

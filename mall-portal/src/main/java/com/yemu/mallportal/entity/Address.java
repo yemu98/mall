@@ -16,7 +16,7 @@ import lombok.Data;
 public class Address {
     @JsonFormat
     @TableId(value = "id",type = IdType.AUTO)
-    private int id;
+    private Integer id;
     private int uid;
     private String name;
     private String address;

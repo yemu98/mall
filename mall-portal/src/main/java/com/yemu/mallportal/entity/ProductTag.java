@@ -13,7 +13,7 @@ import lombok.Data;
 @TableName("product_tag")
 public class ProductTag {
     @TableId(value = "id",type = IdType.AUTO)
-    private int id;
+    private Integer id;
     private int pid;
     private String tag;
 }

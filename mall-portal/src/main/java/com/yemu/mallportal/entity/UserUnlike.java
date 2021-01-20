@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class UserUnlike {
     @JsonFormat
     @TableId(value = "id",type = IdType.AUTO)
-    private int id;
+    private Integer id;
     @NotNull(message = "uid not null")
     private int uid;
     @NotNull(message = "pid not null")

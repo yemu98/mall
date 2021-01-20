@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 public class CartItem {
     @JsonFormat
     @TableId(value = "id",type = IdType.AUTO)
-    private int id;
+    private Integer id;
     private int uid;
     private int pid;
     private Integer num=1;

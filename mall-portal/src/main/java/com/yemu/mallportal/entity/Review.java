@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 public class Review {
     @JsonFormat
     @TableId(value = "id",type = IdType.AUTO)
-    private int id;
+    private Integer id;
     private int uid;
     private int pid;
     private int grade=5;
