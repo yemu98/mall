@@ -37,6 +37,8 @@
         <mall-portal.version>1.0-SNAPSHOT</mall-portal.version>
         <mall-admin.version>1.0-SNAPSHOT</mall-admin.version>
         <mall-user.version>1.0-SNAPSHOT</mall-user.version>
+<!--        打包时跳过测试-->
+        <skipTests>true</skipTests>
     </properties>
 
 <!--    基础依赖 子模块不需再配置-->
