@@ -51,6 +51,7 @@ public class RecommendController {
             productSet = new HashSet<>(products);
         }
         recommendMap.put(uid,productSet);
+        productSet = null;
         return R.ok(ProductUtil.getProductListWithImgList(products));
     }
 }

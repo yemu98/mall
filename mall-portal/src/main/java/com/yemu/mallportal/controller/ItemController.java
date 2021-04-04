@@ -62,6 +62,7 @@ public class ItemController {
             item.setImgList(imgList);
             List<Img> detailImagList = imgService.getDetail(product.getId());
             item.setDetailImgList(detailImagList);
+            // 收集用户点击信息
             userLogService.click(token,item.getProduct().getId());
             return R.ok(item);
         }
